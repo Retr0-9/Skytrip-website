@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="shared-header.css" />
+    <script src="shared-header.js" defer></script>
+    <title>Sky Trip • Your Tickets</title>
+
+    <style>
+      :root {
+        /* Base */
+        --bg: #f4f4fb;
+        --ink: #0f172a;
+        --muted: rgba(100, 116, 139, 1);
+        --line: rgba(148, 163, 184, 0.35);
+
+        /* Accent palette (softer, more modern) */
+        --blue: #38bdf8;
+        --blueInk: #0f172a;
+
+        --coral: #fb7185;
+        --purple: #a855f7;
+        --green: #22c55e;
+        --yellow: #facc15;
+        --orange: #fb923c;
+
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.15);
+
+        --max: 1200px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(56, 189, 248, 0.24) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(168, 85, 247, 0.2) 0%,
+            transparent 55%
+          ),
+          linear-gradient(180deg, #f9fafb 0%, #eef2ff 40%, #e0f2fe 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            circle at 30% 30%,
+            rgba(255, 255, 255, 0.4) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 70% 70%,
+            rgba(156, 214, 230, 0.2) 0%,
+            transparent 40%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      main {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 30px 20px 100px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Page Header */
+      .pageHeader {
+        text-align: center;
+        margin-bottom: 40px;
+        animation: fadeInDown 0.6s ease-out;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .pageHeader h1 {
+        font-size: 42px;
+        font-weight: 900;
+        margin: 0 0 12px;
+        background: linear-gradient(
+          135deg,
+          var(--blueInk),
+          var(--blue),
+          var(--purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -1.5px;
+      }
+
+      .pageHeader p {
+        font-size: 16px;
+        color: var(--muted);
+        margin: 0;
+        font-weight: 500;
+      }
+
+      /* Tools Bar */
+      .toolsBar {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.85)
+        );
+        border-radius: 20px;
+        padding: 20px 24px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        animation: scaleIn 0.6s ease-out 0.2s both;
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border-radius: 14px;
+        border: 2px solid rgba(156, 214, 230, 0.3);
+        background: white;
+        flex: 1;
+        min-width: 280px;
+        transition: all 0.3s ease;
+      }
+
+      .search:focus-within {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .search input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .search input::placeholder {
+        color: rgba(15, 23, 42, 0.3);
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 14px;
+        border: 2px solid rgba(156, 214, 230, 0.3);
+        background: white;
+        font-weight: 800;
+        font-size: 13px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+      }
+
+      .chip:hover {
+        border-color: var(--blue);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+      }
+
+      .chip input {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .btn {
+        border: 0;
+        background: white;
+        border-radius: 14px;
+        padding: 12px 24px;
+        font-weight: 900;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid rgba(0, 0, 0, 0.08);
+        color: var(--ink);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, var(--blue), #74b9ff);
+        color: var(--blueInk);
+        border: 0;
+      }
+
+      .btn.primary:hover {
+        box-shadow: 0 12px 28px rgba(56, 189, 248, 0.4);
+      }
+
+      /* State Message */
+      .state {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.85)
+        );
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        text-align: center;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 15px;
+        margin-top: 20px;
+      }
+
+      /* Grid */
+      .grid {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        gap: 24px;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .search {
+          min-width: 0;
+          width: 100%;
+        }
+        .toolsBar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+
+      /* Card */
+      .card {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.85)
+        );
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(156, 214, 230, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 20s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .card-top {
+        padding: 20px 24px;
+        background: linear-gradient(
+          135deg,
+          rgba(156, 214, 230, 0.1),
+          rgba(162, 155, 254, 0.08)
+        );
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-title {
+        font-size: 18px;
+        font-weight: 900;
+        margin: 0 0 8px;
+        color: var(--ink);
+        letter-spacing: -0.3px;
+      }
+
+      .sub {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--blue), #74b9ff);
+        color: var(--blueInk);
+        font-weight: 900;
+        font-size: 11px;
+        box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--blueInk);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .badge.success {
+        background: linear-gradient(135deg, var(--green), #00b894);
+        color: white;
+      }
+
+      .badge.info {
+        background: rgba(56, 189, 248, 0.15);
+        color: var(--blue);
+      }
+
+      .card-mid {
+        padding: 20px 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .kv {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(156, 214, 230, 0.08);
+        border: 1px solid rgba(156, 214, 230, 0.2);
+        transition: all 0.25s ease;
+      }
+
+      .kv:hover {
+        background: rgba(156, 214, 230, 0.15);
+        transform: translateX(2px);
+      }
+
+      .kv .k {
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .kv .v {
+        margin-top: 6px;
+        font-weight: 900;
+        font-size: 15px;
+        color: var(--ink);
+      }
+
+      .card-actions {
+        padding: 20px 24px;
+        border-top: 2px solid rgba(156, 214, 230, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+
+      .price {
+        font-weight: 900;
+        font-size: 20px;
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+
+      .price small {
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      /* Modal */
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(1100px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 28px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(255, 255, 255, 0.95)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(20px);
+        animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .modal-head {
+        padding: 24px 28px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 2px solid rgba(156, 214, 230, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(156, 214, 230, 0.1),
+          rgba(162, 155, 254, 0.08)
+        );
+      }
+
+      .modal-head h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--ink);
+        letter-spacing: -0.5px;
+      }
+
+      .modal-head p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .x {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        border: 0;
+        background: rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        font-weight: 900;
+        font-size: 20px;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .x:hover {
+        background: rgba(0, 0, 0, 0.1);
+        transform: rotate(90deg);
+      }
+
+      .modal-body {
+        padding: 24px 28px;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+      }
+
+      @media (max-width: 980px) {
+        .modal-body {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .panel {
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0.6)
+        );
+        border: 2px solid rgba(156, 214, 230, 0.2);
+        padding: 20px;
+      }
+
+      .panel h4 {
+        margin: 0 0 16px;
+        font-size: 15px;
+        font-weight: 900;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid rgba(156, 214, 230, 0.2);
+        background: white;
+      }
+
+      .table th,
+      .table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        font-size: 13px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .table th {
+        color: var(--ink);
+        font-weight: 900;
+        background: rgba(156, 214, 230, 0.08);
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+
+      .table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .table td {
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 18px 24px;
+        border-radius: 16px;
+        font-weight: 800;
+        font-size: 14px;
+        box-shadow: var(--shadow-xl);
+        z-index: 1000;
+        display: none;
+        animation: slideInRight 0.4s ease-out;
+        max-width: 400px;
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(100px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .toast.show {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .toast.ok {
+        background: linear-gradient(135deg, var(--green), #00b894);
+        color: white;
+      }
+
+      .toast.bad {
+        background: linear-gradient(135deg, var(--coral), #d63031);
+        color: white;
+      }
+
+      .hint {
+        margin-top: 16px;
+        padding: 14px 18px;
+        background: rgba(156, 214, 230, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(156, 214, 230, 0.2);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.5;
+      }
+
+      code.inline {
+        padding: 3px 10px;
+        border-radius: 8px;
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--blueInk);
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .pageHeader h1 {
+          font-size: 32px;
+        }
+        main {
+          padding: 20px 16px 80px;
+        }
+        .toast {
+          left: 20px;
+          right: 20px;
+          bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="stickyHeader">
+      <div class="hTop">
+        <div class="hBrand">
+          <div class="hBadge" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 16.5L13 13V21L11 20L9 21V13L3 10.5V8.5L9 10V3.5C9 2.7 9.7 2 10.5 2H13.5C14.3 2 15 2.7 15 3.5V10L21 8.5V16.5Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1>Sky Trip</h1>
+            <p id="miniStatus">Connected</p>
+          </div>
+        </div>
+
+        <div class="hActions">
+          <div class="hPill" id="userPill" title="Profile">
+            <div class="hAvatar" id="avatar">U</div>
+            <div
+              style="display: flex; flex-direction: column; line-height: 1.15"
+            >
+              <strong style="font-size: 12px" id="username">User</strong>
+              <span style="font-size: 12px; color: var(--muted)"
+                >Welcome back</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hTabsWrap">
+        <div class="hTabs" id="tabs">
+          <div class="hIndicator" id="indicator"></div>
+
+          <button class="hTab" data-tab="home">
+            <span>⌂</span><span>Home</span>
+          </button>
+          <button class="hTab" data-tab="book">
+            <span>✈</span><span>Book</span>
+          </button>
+          <button class="hTab active" data-tab="tickets">
+            <span>🎟</span><span>Tickets</span>
+          </button>
+          <button class="hTab" data-tab="profile">
+            <span>👤</span><span>Profile</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <!-- Page Header -->
+      <div class="pageHeader">
+        <h1>Your Tickets</h1>
+        <p>View and manage all your flight bookings</p>
+      </div>
+
+      <!-- Tools Bar -->
+      <div class="toolsBar">
+        <div class="search">
+          🔎
+          <input
+            id="q"
+            placeholder="Search by ticket ID, booking ID, class, date..."
+          />
+        </div>
+
+        <label class="chip" title="Show only active bookings">
+          <input type="checkbox" id="onlyActive" checked />
+          <span>Active only</span>
+        </label>
+
+        <button class="btn primary" id="btnRefresh">🔄 Refresh</button>
+        <button class="btn" id="btnClear">✖ Clear</button>
+      </div>
+
+      <div class="hint" id="hintLine">
+        Loading tickets from
+        <code class="inline">/api/tickets/my/paid</code>
+      </div>
+
+      <div id="state" class="state" style="display: none">
+        Loading tickets...
+      </div>
+      <div id="grid" class="grid"></div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <div class="modal-head">
+          <div>
+            <h3 id="mTitle">Ticket Details</h3>
+            <p id="mSub">—</p>
+          </div>
+          <button class="x" id="mClose" aria-label="Close">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="panel">
+            <h4>✈️ Ticket Flights</h4>
+            <table class="table" id="mFlights">
+              <thead>
+                <tr>
+                  <th>FlightSchedule / Route</th>
+                  <th>Times</th>
+                  <th>Extra</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+
+            <div style="height: 20px"></div>
+
+            <h4>👥 Passengers (Booking)</h4>
+            <table class="table" id="mPassengers">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Document</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="panel">
+            <h4>🎁 Services</h4>
+            <table class="table" id="mServices">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+
+            <div style="height: 20px"></div>
+
+            <h4>📋 Summary</h4>
+            <table class="table" id="mSummary">
+              <tbody></tbody>
+            </table>
+
+            <div style="height: 20px"></div>
+
+            <button class="btn primary" id="btnPrint" style="width: 100%">
+              🖨️ Print Ticket
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      /* =========================
+     Tickets Logic (MY PAID ONLY)
+     Source of truth: /api/tickets/my/paid
+     Details: /api/tickets/my/{ticketId}
+  ========================= */
+
+      const API = {
+        base: "https://localhost:7216",
+        endpoints: {
+          myPaidTickets: "/api/tickets/my/paid",
+          myTicketDetails: (ticketId) =>
+            `/api/tickets/my/${encodeURIComponent(ticketId)}`,
+          passengerClassAll: "/api/PassengerClass/all",
+        },
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function toast(msg, ok = true) {
+        const t = $("toast");
+        t.textContent = msg;
+        t.className = "toast show " + (ok ? "ok" : "bad");
+        clearTimeout(toast._tm);
+        toast._tm = setTimeout(() => (t.className = "toast"), 3000);
+      }
+
+      function getToken() {
+        return localStorage.getItem("auth_token") || "";
+      }
+
+      function safe(v, fallback = "—") {
+        if (v === null || v === undefined || v === "") return fallback;
+        return v;
+      }
+
+      function fmtDateTime(iso) {
+        if (!iso) return "—";
+        try {
+          const d = new Date(iso);
+          if (isNaN(d.getTime())) return String(iso);
+          return d.toLocaleString(undefined, {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch {
+          return String(iso);
+        }
+      }
+
+      async function apiFetch(path, options = {}) {
+        const url = API.base + path;
+        const headers = {
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        };
+        const token = getToken();
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const res = await fetch(url, { ...options, headers });
+        const text = await res.text().catch(() => "");
+
+        let body = null;
+        try {
+          body = text ? JSON.parse(text) : null;
+        } catch {
+          body = text;
+        }
+
+        if (!res.ok) {
+          const msg =
+            (body && (body.detail || body.title || body.message)) ||
+            (typeof body === "string" && body) ||
+            `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+
+        return body;
+      }
+
+      function tripTypeLabel(n) {
+        const x = Number(n);
+        if (x === 1) return "One Way";
+        if (x === 2) return "Round Trip";
+        if (x === 3) return "Multi City";
+        return `TripType ${safe(n)}`;
+      }
+
+      /* =========================
+     PassengerClass map
+  ========================= */
+      let CLASS_MAP = new Map(); // id -> name
+
+      function normalizeClassName(obj) {
+        return (
+          obj.nameClass ??
+          obj.NameClass ??
+          obj.className ??
+          obj.ClassName ??
+          obj.name ??
+          obj.Name ??
+          `Class #${obj.classID ?? obj.ClassID ?? obj.id ?? obj.ID}`
+        );
+      }
+
+      async function loadPassengerClasses() {
+        try {
+          const data = await apiFetch(API.endpoints.passengerClassAll);
+          const arr = Array.isArray(data) ? data : [];
+          CLASS_MAP = new Map();
+          for (const c of arr) {
+            const id = c.classID ?? c.ClassID ?? c.id ?? c.ID;
+            if (id !== undefined && id !== null) {
+              CLASS_MAP.set(Number(id), normalizeClassName(c));
+            }
+          }
+        } catch {
+          CLASS_MAP = new Map();
+        }
+      }
+
+      /* =========================
+     Normalize MyPaidTicket row
+     your endpoint returns:
+     { bookID, ticketID, clientID, ticketPrice, passengerClassID, passengersCount, bookingDate, bookingStatus }
+  ========================= */
+      function normPaidRow(x) {
+        return {
+          bookId: x.bookID ?? x.bookId ?? x.BookID,
+          ticketId: x.ticketID ?? x.ticketId ?? x.TicketID,
+          clientId: x.clientID ?? x.clientId ?? x.ClientID,
+          ticketPrice: x.ticketPrice ?? x.TicketPrice ?? 0,
+          passengerClassId:
+            x.passengerClassID ?? x.PassengerClassID ?? x.classID,
+          passengersCount:
+            x.passengersCount ?? x.PassengersCount ?? x.count ?? 0,
+          bookingDate: x.bookingDate ?? x.BookingDate,
+          bookingStatus: x.bookingStatus ?? x.BookingStatus,
+          isConfirmed:
+            (x.bookingStatus || "").toString().toLowerCase() === "confirmed",
+        };
+      }
+
+      /* =========================
+     Render
+  ========================= */
+      let ALL = []; // normalized paid rows
+
+      function cardHTML(r) {
+        const className =
+          CLASS_MAP.get(Number(r.passengerClassId)) ||
+          `Class #${safe(r.passengerClassId)}`;
+
+        const statusBadge = r.isConfirmed
+          ? '<span class="badge success">✓ Confirmed</span>'
+          : '<span class="badge info">Pending</span>';
+
+        return `
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">Booking #${safe(r.bookId)} • Ticket #${safe(r.ticketId)}</div>
+          <div class="sub">
+            <span class="tag"><span class="dot"></span>${className}</span>
+            <span>•</span>
+            <span>${safe(r.bookingStatus)}</span>
+            <span>•</span>
+            ${statusBadge}
+            <span>•</span>
+            <span class="badge success">PAID ✅</span>
+          </div>
+        </div>
+
+        <div class="card-mid">
+          <div class="meta">
+            <div class="kv"><div class="k">Passengers</div><div class="v">${safe(r.passengersCount)}</div></div>
+            <div class="kv"><div class="k">Class ID</div><div class="v">${safe(r.passengerClassId)}</div></div>
+            <div class="kv"><div class="k">Book ID</div><div class="v">${safe(r.bookId)}</div></div>
+            <div class="kv"><div class="k">Ticket ID</div><div class="v">${safe(r.ticketId)}</div></div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div class="price">${safe(r.ticketPrice)} <small>USD</small></div>
+          <button class="btn primary" data-act="details">📄 View Details</button>
+        </div>
+      </div>
+    `;
+      }
+
+      function render(list) {
+        const grid = $("grid");
+        const state = $("state");
+        grid.innerHTML = "";
+
+        if (!list || list.length === 0) {
+          state.style.display = "block";
+          state.textContent = "No paid/confirmed tickets found.";
+          return;
+        }
+
+        state.style.display = "none";
+        for (const r of list) {
+          const wrap = document.createElement("div");
+          wrap.innerHTML = cardHTML(r);
+          const card = wrap.firstElementChild;
+
+          card
+            .querySelector('[data-act="details"]')
+            .addEventListener("click", () => openDetails(r.ticketId));
+          grid.appendChild(card);
+        }
+      }
+
+      function applyFilters() {
+        const q = ($("q").value || "").trim().toLowerCase();
+        const onlyActive = $("onlyActive").checked;
+
+        let list = ALL.slice();
+
+        if (onlyActive) {
+          list = list.filter((x) => x.isConfirmed);
+        }
+
+        if (q) {
+          list = list.filter((r) => {
+            const hay = [
+              r.bookId,
+              r.ticketId,
+              r.clientId,
+              r.passengerClassId,
+              r.passengersCount,
+              r.ticketPrice,
+              r.bookingDate,
+              r.bookingStatus,
+              CLASS_MAP.get(Number(r.passengerClassId)),
+            ]
+              .filter((x) => x !== null && x !== undefined)
+              .join(" ")
+              .toLowerCase();
+            return hay.includes(q);
+          });
+        }
+
+        render(list);
+      }
+
+      /* =========================
+     Modal (Details) — ONE CALL
+     GET /api/tickets/my/{ticketId}
+     returns: { summary, flights, services, passengers }
+  ========================= */
+      function openModal() {
+        $("modal").classList.add("show");
+      }
+      function closeModal() {
+        $("modal").classList.remove("show");
+      }
+
+      function fillTableEmpty(tbody, colspan, text) {
+        tbody.innerHTML = `<tr><td colspan="${colspan}">${text}</td></tr>`;
+      }
+
+      function normalizePassengerName(p) {
+        const fn = p.firstName ?? p.FirstName ?? "";
+        const ln = p.lastName ?? p.LastName ?? "";
+        const sn = p.secondName ?? p.SecondName ?? "";
+        const tn = p.thirdName ?? p.ThirdName ?? "";
+        const full = [fn, sn, tn, ln].filter(Boolean).join(" ").trim();
+        return full || "—";
+      }
+
+      function renderPassengers(passengers) {
+        const tb = $("mPassengers").querySelector("tbody");
+        tb.innerHTML = "";
+        if (!Array.isArray(passengers) || passengers.length === 0) {
+          fillTableEmpty(tb, 3, "No passengers.");
+          return;
+        }
+
+        for (const p of passengers) {
+          const tr = document.createElement("tr");
+          const doc = `${safe(p.documentationType)} • ${safe(p.issueCountryID)} • ${
+            p.expirationDate ? fmtDateTime(p.expirationDate).split(",")[0] : "—"
+          }`;
+          tr.innerHTML = `
+        <td>${normalizePassengerName(p)}</td>
+        <td>${safe(p.gender ?? p.Gender)}</td>
+        <td>${doc}</td>
+      `;
+          tb.appendChild(tr);
+        }
+      }
+
+      function renderFlights(flights) {
+        const tb = $("mFlights").querySelector("tbody");
+        tb.innerHTML = "";
+        if (!Array.isArray(flights) || flights.length === 0) {
+          fillTableEmpty(tb, 3, "No flights for this ticket.");
+          return;
+        }
+
+        for (const f of flights) {
+          const route = `${safe(f.departureCity)} → ${safe(f.arrivalCity)}`;
+          const time = `${f.departureDateTime ? fmtDateTime(f.departureDateTime) : "—"} / ${
+            f.arrivalDateTime ? fmtDateTime(f.arrivalDateTime) : "—"
+          }`;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+        <td>Schedule #${safe(f.flightScheduleID)}
+          <div style="margin-top:4px; color:var(--muted); font-weight:650;">${route}</div>
+        </td>
+        <td>${time}</td>
+        <td>${safe(f.flightType)}</td>
+      `;
+          tb.appendChild(tr);
+        }
+      }
+
+      function renderServices(services) {
+        const tb = $("mServices").querySelector("tbody");
+        tb.innerHTML = "";
+        if (!Array.isArray(services) || services.length === 0) {
+          fillTableEmpty(tb, 3, "No services for this ticket.");
+          return;
+        }
+
+        for (const s of services) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${safe(s.serviceName)}</td><td>${safe(s.quantity)}</td><td>${safe(s.serviceFee)}</td>`;
+          tb.appendChild(tr);
+        }
+      }
+
+      function fillSummary(summary) {
+        const tb = $("mSummary").querySelector("tbody");
+        tb.innerHTML = "";
+
+        const className =
+          CLASS_MAP.get(Number(summary.passengerClassID)) ||
+          `Class #${safe(summary.passengerClassID)}`;
+
+        const rows = [
+          ["BookID", safe(summary.bookID)],
+          ["TicketID", safe(summary.ticketID)],
+          ["ClientID", safe(summary.clientID)],
+          ["BookingStatus", safe(summary.bookingStatus)],
+          ["Reference", safe(summary.bookingReference)],
+          ["Class", className],
+          ["PassengersCount", safe(summary.passengersCount)],
+          ["TicketPrice", `${safe(summary.ticketPrice)} USD`],
+          ["BookingDate", fmtDateTime(summary.bookingDate)],
+          ["Paid", "Yes ✅"],
+        ];
+
+        for (const [k, v] of rows) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<th style="width:42%">${k}</th><td>${v}</td>`;
+          tb.appendChild(tr);
+        }
+      }
+
+      async function openDetails(ticketId) {
+        try {
+          $("mTitle").textContent = `Ticket #${safe(ticketId)}`;
+          $("mSub").textContent = "Loading details…";
+
+          const data = await apiFetch(API.endpoints.myTicketDetails(ticketId));
+
+          const summary = data?.summary || {};
+          $("mSub").textContent =
+            `${safe(summary.bookingStatus)} • ${fmtDateTime(summary.bookingDate)}`;
+
+          renderFlights(data?.flights || []);
+          renderServices(data?.services || []);
+          renderPassengers(data?.passengers || []);
+          fillSummary(summary);
+
+          openModal();
+        } catch (e) {
+          toast("Failed to load details: " + e.message, false);
+        }
+      }
+
+      /* =========================
+     Tabs Navigation
+  ========================= */
+      function setupTabs() {
+        const map = {
+          home: "home.html",
+          book: "BookingPage.html",
+          tickets: "Ticket.html",
+          profile: "Profile.html",
+        };
+
+        document.querySelectorAll(".hTab").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const tab = btn.getAttribute("data-tab");
+            const url = map[tab];
+            if (url) window.location.href = url;
+          });
+        });
+
+        $("userPill")?.addEventListener(
+          "click",
+          () => (window.location.href = "Profile.html"),
+        );
+      }
+
+      /* =========================
+     Load User Profile for Header
+  ========================= */
+      function loadUserProfile() {
+        const token = getToken();
+        if (token) {
+          try {
+            const payload = token.split(".")[1];
+            const json = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+            const decoded = JSON.parse(decodeURIComponent(escape(json)));
+
+            const firstName = decoded.firstName || decoded.FirstName || "";
+            const lastName = decoded.lastName || decoded.LastName || "";
+            const email =
+              decoded.email ||
+              decoded[
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+              ] ||
+              "";
+
+            let fullName = "";
+            if (firstName && lastName) {
+              fullName = `${firstName} ${lastName}`.toUpperCase();
+            } else if (firstName) {
+              fullName = firstName.toUpperCase();
+            } else if (email) {
+              fullName = email.split("@")[0].toUpperCase();
+            } else {
+              fullName = "User";
+            }
+
+            $("username").textContent = fullName;
+            $("avatar").textContent = fullName[0];
+          } catch (e) {
+            console.warn("Could not parse token", e);
+          }
+        }
+      }
+
+      /* =========================
+     INIT
+  ========================= */
+      async function loadAll() {
+        const token = getToken();
+        const hint = $("hintLine");
+
+        loadUserProfile();
+
+        if (!token) {
+          hint.innerHTML =
+            '⚠️ You are not logged in. <code class="inline">auth_token</code> missing.';
+          $("state").textContent = "Please login first.";
+          $("state").style.display = "block";
+          $("grid").innerHTML = "";
+          toast("Please login first.", false);
+          return;
+        }
+
+        hint.innerHTML =
+          'Loaded from <code class="inline">/api/tickets/my/paid</code> (JWT ownership).';
+
+        try {
+          $("state").textContent = "Loading your paid tickets…";
+          $("state").style.display = "block";
+
+          await loadPassengerClasses();
+
+          const rows = await apiFetch(API.endpoints.myPaidTickets);
+          const arr = Array.isArray(rows) ? rows : [];
+          ALL = arr.map(normPaidRow);
+
+          applyFilters();
+          toast("✓ Paid tickets loaded successfully");
+        } catch (e) {
+          $("grid").innerHTML = "";
+          $("state").textContent = "Error: " + e.message;
+          $("state").style.display = "block";
+          toast("✗ Failed: " + e.message, false);
+        }
+      }
+
+      $("btnRefresh").addEventListener("click", loadAll);
+      $("btnClear").addEventListener("click", () => {
+        $("q").value = "";
+        applyFilters();
+      });
+      $("q").addEventListener("input", applyFilters);
+      $("onlyActive").addEventListener("change", applyFilters);
+
+      $("mClose").addEventListener("click", closeModal);
+      $("modal").addEventListener("click", (e) => {
+        if (e.target === $("modal")) closeModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      $("btnPrint").addEventListener("click", () => window.print());
+
+      setupTabs();
+      loadAll();
+    </script>
+  </body>
+</html>

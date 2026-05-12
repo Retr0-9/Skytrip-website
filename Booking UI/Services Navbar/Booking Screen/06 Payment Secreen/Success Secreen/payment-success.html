@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <link rel="stylesheet" href="payment-success.css" />
+
+    <script src="payment-success.js" defer></script>
+
+    <title>Sky Trip • Payment Success</title>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="ok">✓</div>
+        <h1>Payment successful</h1>
+        <p id="subtitle">Your booking is being confirmed…</p>
+
+        <div class="ref">
+          <div class="row">Ticket ID</div>
+          <div id="ticketId" class="val">—</div>
+
+          <div class="row">Book ID</div>
+          <div id="bookId" class="val">—</div>
+
+          <div class="row">Payment Status</div>
+          <div id="payStatus" class="val">Checking…</div>
+
+          <div class="row">Booking reference (if available)</div>
+          <div id="ref" class="val">—</div>
+
+          <div class="hint" id="hint">
+            We’re waiting for the server to confirm your booking. This usually
+            takes a few seconds.
+          </div>
+
+          <div class="error" id="errLine"></div>
+        </div>
+
+        <a
+          id="goTicketsBtn"
+          class="btn"
+          href="Ticket.html"
+          style="display: none"
+          >Go to My Tickets</a
+        >
+        <a id="retryBtn" class="btn secondary" href="#" style="display: none"
+          >Retry</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

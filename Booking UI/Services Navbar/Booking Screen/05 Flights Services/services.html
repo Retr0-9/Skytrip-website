@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="services.css" />
+    <script src="services.js" defer></script>
+
+    <title>Optional Services</title>
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="topbar">
+        <button class="back" onclick="history.back()">←</button>
+        <div class="title">
+          <h1>Optional Services</h1>
+          <p>Enhance your travel experience</p>
+        </div>
+      </div>
+
+      <div id="servicesList"></div>
+
+      <div class="card totalCard">
+        <span>Services Total</span>
+        <span id="totalPrice">0.00 JOD</span>
+      </div>
+
+      <div class="actions">
+        <button class="btn skip" id="skipBtn">Skip</button>
+        <button class="btn cont" id="continueBtn">Continue</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </body>
+</html>

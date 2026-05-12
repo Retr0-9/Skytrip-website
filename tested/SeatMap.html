@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sky Trip • SeatMap</title>
+
+    <style>
+      :root {
+        --bg: #e9f1f2;
+        --card: #ffffff;
+        --ink: #2b2b2b;
+        --muted: rgba(43, 43, 43, 0.6);
+        --shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        --radius: 18px;
+
+        --available: #f2efe8;
+        --premium: #f3c77f;
+        --selected: #9fd6e3;
+        --taken: #b8ada2;
+
+        --line: rgba(0, 0, 0, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial;
+        background: linear-gradient(
+          180deg,
+          #dff0f3 0%,
+          var(--bg) 35%,
+          #f3f6f7 100%
+        );
+        color: var(--ink);
+      }
+
+      .wrap {
+        max-width: 420px;
+        margin: 22px auto;
+        padding: 14px;
+      }
+
+      .topHint {
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: 14px;
+        padding: 10px 12px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .legend {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: 14px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+      }
+
+      .chip {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 14px 12px 12px;
+      }
+
+      .titleRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .title {
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        font-size: 16px;
+      }
+
+      .sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .plane {
+        position: relative;
+        border-radius: 18px;
+        background: #fbfbfb;
+        border: 1px solid var(--line);
+        padding: 18px 14px 14px;
+        overflow: hidden;
+      }
+
+      .cockpit {
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #a7d5e5;
+        color: white;
+        font-weight: 700;
+        font-size: 11px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .rows {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: 22px 1fr 18px 1fr 22px; /* left numbers, left seats, aisle, right seats, right numbers */
+        gap: 10px 10px;
+        align-items: center;
+      }
+
+      .rnum {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.35);
+        text-align: center;
+        user-select: none;
+      }
+
+      .block {
+        display: grid;
+        grid-template-columns: repeat(3, 26px);
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .aisle {
+        width: 18px;
+      }
+
+      .seat {
+        width: 26px;
+        height: 26px;
+        border-radius: 9px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: var(--available);
+        cursor: pointer;
+        transition:
+          transform 0.08s ease,
+          filter 0.2s ease,
+          opacity 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: rgba(0, 0, 0, 0.55);
+        user-select: none;
+      }
+
+      .seat:hover {
+        transform: translateY(-1px);
+        filter: brightness(0.98);
+      }
+
+      .seat.premium {
+        background: var(--premium);
+      }
+      .seat.selected {
+        background: var(--selected);
+      }
+      .seat.taken {
+        background: var(--taken);
+        opacity: 0.95;
+        cursor: not-allowed;
+      }
+
+      .seat.blank {
+        background: transparent;
+        border: 1px dashed rgba(0, 0, 0, 0.06);
+        opacity: 0.35;
+        cursor: default;
+      }
+
+      .footer {
+        margin-top: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .btn {
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: #b9dfe7;
+        color: rgba(0, 0, 0, 0.55);
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .miniPanel {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px 12px;
+      }
+
+      .miniTitle {
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .list {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        background: rgba(20, 20, 20, 0.92);
+        color: white;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+        box-shadow: 0 16px 35px rgba(0, 0, 0, 0.25);
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-4px);
+      }
+
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .input,
+      .select {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        outline: none;
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      .btnSmall {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 10px;
+        font-weight: 700;
+        cursor: pointer;
+        background: #e5f4f7;
+        border: 1px solid var(--line);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div id="hint" class="topHint">Loading booking summary…</div>
+
+      <div class="legend">
+        <span class="chip"
+          ><span class="dot" style="background: var(--available)"></span
+          >Available</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--premium)"></span
+          >Premium</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--selected)"></span
+          >Selected</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--taken)"></span>Taken</span
+        >
+      </div>
+
+      <div class="card">
+        <div class="titleRow">
+          <div>
+            <div class="title">SeatMap</div>
+            <div id="sub" class="sub">—</div>
+          </div>
+          <div class="sub" id="selectedCount">0 selected</div>
+        </div>
+
+        <div class="plane">
+          <div class="cockpit">Cockpit</div>
+          <div id="rows" class="rows"></div>
+        </div>
+
+        <div class="footer">
+          <button id="confirmBtn" class="btn" disabled>
+            Confirm (0 selected)
+          </button>
+
+          <div class="miniPanel">
+            <div class="miniTitle">Passengers Seats (after assign/confirm)</div>
+            <div id="passSeats" class="list">—</div>
+          </div>
+
+          <div class="miniPanel">
+            <div class="miniTitle">Manual Assign (optional)</div>
+            <div class="row2">
+              <input
+                id="assignPassengerId"
+                class="input"
+                placeholder="PassengerId (e.g. 2007)"
+              />
+              <select id="assignSeatCode" class="select"></select>
+            </div>
+            <div style="height: 8px"></div>
+            <button id="assignBtn" class="btnSmall">
+              Assign selected seat to passenger
+            </button>
+            <div class="sub" style="margin-top: 6px">
+              Tip: this calls <b>PUT /seats/assign</b> using the chosen seat.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+      // ===============================
+      // CONFIG
+      // ===============================
+      const API_BASE =
+        "https://bookingtrip-api-2026-cyh0f4dhfednh3fj.westeurope-01.azurewebsites.net";
+
+      const BOOKING_TEMP_ID =
+        localStorage.getItem("bookingTempId") ||
+        localStorage.getItem("BookingTempId") ||
+        sessionStorage.getItem("bookingTempId") ||
+        "TMP-001";
+
+      const ENDPOINT = {
+        summary: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/summary`,
+        seats: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/seats`,
+        hold: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/seats/hold`,
+        confirm: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/seats/confirm`,
+        passengersSeats: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/passengers/seats`,
+        assign: (id) =>
+          `${API_BASE}/api/Bookings/${encodeURIComponent(id)}/seats/assign`,
+      };
+
+      // ===============================
+      // PRICING (عدّلها حسب مشروعك)
+      // ===============================
+      // 1) إذا عندك أسعار ثابتة حسب SeatId (أفضل)
+      const SEAT_PRICE_BY_ID = {
+        // مثال:
+        // 1: 5,
+        // 2: 5,
+        // 3: 5,
+        // 4: 0,
+      };
+
+      // 2) إذا ما عندك سعر لكل مقعد: Premium rows <= 3 عليها سعر
+      const PREMIUM_ROWS_MAX = 3;
+      const PREMIUM_PRICE = 10; // JOD (عدّلها)
+      const NORMAL_PRICE = 0; // JOD
+
+      function seatPriceByRule(seatCode) {
+        // seatCode مثل "2B"
+        const m = String(seatCode || "").match(/^(\d+)[A-Z]$/i);
+        const row = m ? Number(m[1]) : 999;
+        return row <= PREMIUM_ROWS_MAX ? PREMIUM_PRICE : NORMAL_PRICE;
+      }
+
+      // ===============================
+      // HELPERS
+      // ===============================
+      const $ = (id) => document.getElementById(id);
+
+      function toast(msg, ok = true) {
+        const t = $("toast");
+        t.textContent = msg;
+        t.style.background = ok
+          ? "rgba(20,20,20,0.92)"
+          : "rgba(160,30,30,0.92)";
+        t.className = "toast show";
+        clearTimeout(toast._tm);
+        toast._tm = setTimeout(() => (t.className = "toast"), 2400);
+      }
+
+      function getToken() {
+        return localStorage.getItem("auth_token") || "";
+      }
+
+      function moneyJOD(n) {
+        const x = Number(n);
+        if (!Number.isFinite(x)) return "0.00 JOD";
+        return x.toFixed(2) + " JOD";
+      }
+
+      async function apiFetch(url, opts = {}) {
+        const token = getToken();
+        const headers = { ...(opts.headers || {}) };
+
+        // مهم: فقط حط Content-Type لما تبعث JSON
+        if (opts.body != null && !(opts.body instanceof FormData)) {
+          headers["Content-Type"] = "application/json";
+        }
+
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+
+        const res = await fetch(url, { ...opts, headers });
+
+        let data = null;
+        const ct = res.headers.get("content-type") || "";
+        if (ct.includes("application/json")) {
+          data = await res.json().catch(() => null);
+        } else {
+          const text = await res.text().catch(() => "");
+          data = text ? { text } : null;
+        }
+
+        if (!res.ok) {
+          const detail =
+            data?.detail ||
+            data?.message ||
+            data?.text ||
+            res.statusText ||
+            "Error";
+          const err = new Error(detail);
+          err.status = res.status;
+          err.body = data;
+          throw err;
+        }
+        return data;
+      }
+
+      // ===============================
+      // Seat layout (UI Map)
+      // ===============================
+      const layout = (() => {
+        const rows = [];
+        for (let r = 1; r <= 20; r++) {
+          rows.push({
+            row: r,
+            left: [
+              { code: `${r}A`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+              { code: `${r}B`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+              { code: `${r}C`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+            ],
+            right: [
+              { code: `${r}D`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+              { code: `${r}E`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+              { code: `${r}F`, seatId: null, premium: r <= PREMIUM_ROWS_MAX },
+            ],
+          });
+        }
+
+        // ✅ اربط الـ SeatId الحقيقي عندك (عدّلها لما تصير عندك كل المقاعد)
+        const known = {
+          "1A": 1,
+          "1B": 2,
+          "1C": 3,
+          "2A": 4,
+          "2B": 5,
+          "2C": 6,
+        };
+
+        for (const row of rows) {
+          for (const s of [...row.left, ...row.right]) {
+            if (known[s.code]) s.seatId = known[s.code];
+          }
+        }
+        return rows;
+      })();
+
+      // ===============================
+      // State
+      // ===============================
+      let bookingSummary = null;
+      let selectedSeatIds = new Set();
+      let selectedSeatCodes = new Map(); // seatId -> code
+      let takenSeatCodes = new Set(); // (إذا لاحقًا صار عندك API للتوكن seats taken)
+
+      // ===============================
+      // PRICING CALC + STORAGE ✅
+      // ===============================
+      function getSeatPrice(seatId, seatCode) {
+        // 1) explicit by ID
+        const byId = Number(SEAT_PRICE_BY_ID[seatId]);
+        if (Number.isFinite(byId) && byId > 0) return byId;
+
+        // 2) by rule from code
+        return seatPriceByRule(seatCode);
+      }
+
+      function computeSeatsTotal() {
+        let total = 0;
+        const details = [];
+
+        for (const seatId of selectedSeatIds) {
+          const code =
+            selectedSeatCodes.get(seatId) || findSeatCodeById(seatId) || "";
+          const price = getSeatPrice(seatId, code);
+          total += price;
+          details.push({ seatId, code, price });
+        }
+
+        // ✅ خزّنها عشان Payment يجمعها
+        sessionStorage.setItem("seatsTotal", String(Number(total.toFixed(2))));
+        sessionStorage.setItem("selectedSeats", JSON.stringify(details));
+
+        return { total, details };
+      }
+
+      // ===============================
+      // UI render
+      // ===============================
+      function updateHint() {
+        if (!bookingSummary) return;
+
+        const { total } = computeSeatsTotal();
+
+        const remaining = Math.max(
+          0,
+          bookingSummary.expectedPassengers - selectedSeatIds.size,
+        );
+
+        $("hint").textContent =
+          remaining > 0
+            ? `Please select ${remaining} more seat${remaining === 1 ? "" : "s"} • Seats Total: ${moneyJOD(total)}`
+            : `Seats selection complete ✅ • Seats Total: ${moneyJOD(total)}`;
+
+        $("sub").textContent =
+          `BookingTempId: ${BOOKING_TEMP_ID} • Cabin: ${bookingSummary.cabinClass} • FlightSchedule: ${bookingSummary.flightScheduleId}`;
+
+        $("selectedCount").textContent = `${selectedSeatIds.size} selected`;
+
+        const btn = $("confirmBtn");
+        btn.disabled =
+          selectedSeatIds.size !== bookingSummary.expectedPassengers;
+
+        btn.textContent = `Confirm (${selectedSeatIds.size} selected) • ${moneyJOD(total)}`;
+      }
+
+      function seatClass(seat) {
+        if (!seat.seatId) return "seat blank";
+        const isSelected = selectedSeatIds.has(seat.seatId);
+        const isTaken = takenSeatCodes.has(seat.code);
+        const premium = seat.premium;
+
+        let cls = "seat";
+        if (premium) cls += " premium";
+        if (isTaken) cls += " taken";
+        if (isSelected) cls += " selected";
+        return cls;
+      }
+
+      function renderSeats() {
+        const rowsEl = $("rows");
+        rowsEl.innerHTML = "";
+
+        // assign dropdown
+        const ddl = $("assignSeatCode");
+        ddl.innerHTML = "";
+        for (const [seatId, code] of selectedSeatCodes.entries()) {
+          const opt = document.createElement("option");
+          opt.value = String(seatId);
+          opt.textContent = `${code} (SeatId ${seatId})`;
+          ddl.appendChild(opt);
+        }
+        if (!ddl.options.length) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "Select seats first…";
+          ddl.appendChild(opt);
+        }
+
+        for (const r of layout) {
+          const leftNum = document.createElement("div");
+          leftNum.className = "rnum";
+          leftNum.textContent = r.row;
+
+          const leftBlock = document.createElement("div");
+          leftBlock.className = "block";
+          r.left.forEach((s) => leftBlock.appendChild(makeSeatEl(s)));
+
+          const aisle = document.createElement("div");
+          aisle.className = "aisle";
+
+          const rightBlock = document.createElement("div");
+          rightBlock.className = "block";
+          r.right.forEach((s) => rightBlock.appendChild(makeSeatEl(s)));
+
+          const rightNum = document.createElement("div");
+          rightNum.className = "rnum";
+          rightNum.textContent = r.row;
+
+          rowsEl.appendChild(leftNum);
+          rowsEl.appendChild(leftBlock);
+          rowsEl.appendChild(aisle);
+          rowsEl.appendChild(rightBlock);
+          rowsEl.appendChild(rightNum);
+        }
+
+        updateHint();
+      }
+
+      function makeSeatEl(seat) {
+        const el = document.createElement("div");
+        el.className = seatClass(seat);
+
+        if (seat.seatId) {
+          const price = getSeatPrice(seat.seatId, seat.code);
+          el.title = `${seat.code} (SeatId ${seat.seatId}) • ${moneyJOD(price)}`;
+        } else {
+          el.title = seat.code;
+        }
+
+        if (!seat.seatId) return el;
+
+        el.addEventListener("click", async () => {
+          if (!bookingSummary) return;
+          if (takenSeatCodes.has(seat.code)) return;
+
+          const isSelected = selectedSeatIds.has(seat.seatId);
+
+          if (!isSelected) {
+            if (selectedSeatIds.size >= bookingSummary.expectedPassengers) {
+              toast("You already selected enough seats.", false);
+              return;
+            }
+            await holdSeat(seat.seatId, seat.code);
+          } else {
+            await unholdSeat(seat.seatId);
+          }
+
+          renderSeats();
+        });
+
+        return el;
+      }
+
+      // ===============================
+      // API calls
+      // ===============================
+      async function loadSummary() {
+        const data = await apiFetch(ENDPOINT.summary(BOOKING_TEMP_ID), {
+          method: "GET",
+        });
+        bookingSummary = {
+          bookingTempId: data.bookingTempId,
+          expectedPassengers: Number(data.expectedPassengers || 0),
+          flightScheduleId: Number(data.flightScheduleId || 0),
+          cabinClass: data.cabinClass || "",
+        };
+      }
+
+      async function loadSelectedSeats() {
+        const data = await apiFetch(ENDPOINT.seats(BOOKING_TEMP_ID), {
+          method: "GET",
+        });
+
+        selectedSeatIds = new Set(
+          Array.isArray(data.seatIds) ? data.seatIds : [],
+        );
+        selectedSeatCodes = new Map();
+
+        if (Array.isArray(data.seatIds) && Array.isArray(data.seatCodes)) {
+          for (let i = 0; i < data.seatIds.length; i++) {
+            selectedSeatCodes.set(data.seatIds[i], data.seatCodes[i]);
+          }
+        } else {
+          // fallback: حاول تتوقع الكود من layout
+          for (const id of selectedSeatIds) {
+            const c = findSeatCodeById(id);
+            if (c) selectedSeatCodes.set(id, c);
+          }
+        }
+
+        // ✅ حدّث التخزين
+        computeSeatsTotal();
+      }
+
+      async function holdSeat(seatId, seatCode) {
+        const payload = {
+          flightScheduleId: bookingSummary.flightScheduleId,
+          seatIds: [seatId],
+        };
+
+        const data = await apiFetch(ENDPOINT.hold(BOOKING_TEMP_ID), {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+
+        selectedSeatIds.add(seatId);
+        if (seatCode) selectedSeatCodes.set(seatId, seatCode);
+
+        computeSeatsTotal();
+        toast(`Seat held ✅ (expires: ${data.expiresAt || "—"})`);
+      }
+
+      async function unholdSeat(seatId) {
+        const payload = { seatIds: [seatId] };
+
+        await apiFetch(ENDPOINT.hold(BOOKING_TEMP_ID), {
+          method: "DELETE",
+          body: JSON.stringify(payload),
+        });
+
+        selectedSeatIds.delete(seatId);
+        selectedSeatCodes.delete(seatId);
+
+        computeSeatsTotal();
+        toast("Seat released ✅");
+      }
+
+      async function confirmSeats() {
+        const payload = { flightScheduleId: bookingSummary.flightScheduleId };
+
+        await apiFetch(ENDPOINT.confirm(BOOKING_TEMP_ID), {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+
+        // ✅ تأكيد ثم refresh ثم خزّن totals
+        await loadSelectedSeats();
+        await loadPassengersSeats();
+        computeSeatsTotal();
+
+        toast("Seats confirmed ✅");
+      }
+
+      async function loadPassengersSeats() {
+        const box = $("passSeats");
+        try {
+          const data = await apiFetch(
+            ENDPOINT.passengersSeats(BOOKING_TEMP_ID),
+            {
+              method: "GET",
+            },
+          );
+
+          if (!data?.items?.length) {
+            box.textContent = "No assigned seats yet.";
+            return;
+          }
+
+          box.innerHTML = data.items
+            .map(
+              (x) =>
+                `PassengerID <b>${x.passengerId}</b> (PersonID ${x.personId}) → Seat <b>${x.seatCode}</b> (SeatId ${x.seatId})`,
+            )
+            .join("<br/>");
+        } catch {
+          box.textContent = "—";
+        }
+      }
+
+      async function assignSeatManual() {
+        const passengerId = parseInt($("assignPassengerId").value || "0", 10);
+        const seatId = parseInt($("assignSeatCode").value || "0", 10);
+
+        if (!passengerId || !seatId) {
+          toast("Enter PassengerId and pick a seat.", false);
+          return;
+        }
+
+        const payload = {
+          flightScheduleId: bookingSummary.flightScheduleId,
+          assignments: [{ seatId, passengerId }],
+        };
+
+        await apiFetch(ENDPOINT.assign(BOOKING_TEMP_ID), {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        });
+
+        toast("Assigned ✅");
+        await loadPassengersSeats();
+      }
+
+      function findSeatCodeById(seatId) {
+        for (const r of layout) {
+          for (const s of [...r.left, ...r.right]) {
+            if (s.seatId === seatId) return s.code;
+          }
+        }
+        return null;
+      }
+
+      // ===============================
+      // Init
+      // ===============================
+      async function init() {
+        try {
+          $("hint").textContent = "Loading booking summary…";
+          await loadSummary();
+          await loadSelectedSeats();
+          await loadPassengersSeats();
+          renderSeats();
+        } catch (e) {
+          toast(e.message || "Failed to load", false);
+          $("hint").textContent = "Failed to load SeatMap.";
+        }
+      }
+
+      $("confirmBtn").addEventListener("click", async () => {
+        try {
+          await confirmSeats();
+
+          // ✅ بعد confirm (اختياري): تروح على Passenger Info مباشرة
+          // إذا بدك تفعّلها فكّ التعليق:
+          // const bookId = sessionStorage.getItem("bookId") || "";
+          // window.location.href = `Doc.html?bookId=${encodeURIComponent(bookId)}`;
+
+          renderSeats();
+        } catch (e) {
+          toast(e.message || "Confirm failed", false);
+        }
+      });
+
+      $("assignBtn").addEventListener("click", async () => {
+        try {
+          await assignSeatManual();
+        } catch (e) {
+          toast(e.message || "Assign failed", false);
+        }
+      });
+
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,252 @@
+:root {
+  --bg: #f3ede3;
+  --card: #fff;
+  --text: #2b2b2b;
+  --muted: #8a8a8a;
+  --line: #e6ded4;
+  --accent: #9fd3e3;
+  --shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+  --radius: 18px;
+  --danger: #d9534f;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.page {
+  width: 100%;
+  max-width: 520px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.back {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  background: #fff;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  font-size: 18px;
+}
+.top-title h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+.top-title p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.flight-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.plane {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 22px;
+}
+.flight-title strong {
+  display: block;
+  font-size: 14px;
+}
+.flight-title span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Segments list */
+.seglist {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.seg {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+}
+.seg-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.seg-top strong {
+  font-size: 13px;
+}
+.seg-top small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.seg-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+.chip.primary {
+  border: 0;
+  background: linear-gradient(90deg, var(--accent), #cfe8ef);
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #9fd3e3;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+.line {
+  width: 2px;
+  background: var(--line);
+  margin: 4px auto;
+  height: 40px;
+}
+.time strong {
+  font-size: 13px;
+}
+.time p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #9a7a63;
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: 22px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 14px 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 6px 0;
+}
+.row.total {
+  font-weight: 800;
+}
+
+/* CTA Buttons */
+.cta {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  background: #fff;
+  margin-bottom: 10px;
+  transition:
+    transform 0.12s ease,
+    opacity 0.2s ease;
+}
+.cta:active {
+  transform: translateY(1px);
+}
+.cta[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cta-primary {
+  background: linear-gradient(90deg, var(--accent), #cfe8ef);
+  color: rgba(43, 43, 43, 0.85);
+}
+
+.msg {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+.error {
+  display: none;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  background: #fff1f1;
+  border: 1px solid #ffd2d2;
+  color: #9b2c2c;
+}
+.bookerr {
+  display: none;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff1f1;
+  border: 1px solid #ffd2d2;
+  color: #9b2c2c;
+  font-weight: 700;
+  font-size: 13px;
+}

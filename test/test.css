@@ -1,0 +1,164 @@
+:root {
+  --bg: #ede0d4;
+  --text: #2b2b2b;
+  --muted: rgba(43, 43, 43, 0.65);
+  --line: rgba(0, 0, 0, 0.08);
+  --accent: #2b2b2b;
+
+  --blue: #9cd6e6;
+  --blueInk: #0c3b4a;
+}
+
+header.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.hTop {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+}
+
+.hBadge {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--blue);
+  color: var(--blueInk);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.hBrand h1 {
+  font-size: 15px;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+.hBrand p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.hActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hPill {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease;
+  user-select: none;
+}
+.hPill:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.75);
+}
+.hPill:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+.hAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(43, 43, 43, 0.08);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Tabs */
+.hTabsWrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px 12px;
+}
+
+.hTabs {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.hTab {
+  position: relative;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: rgba(43, 43, 43, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 650;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+  outline: none;
+  z-index: 2;
+  white-space: nowrap;
+}
+.hTab:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+.hTab:active {
+  transform: translateY(0px);
+}
+.hTab.active {
+  color: var(--text);
+}
+
+/* Moving underline */
+.hIndicator {
+  position: absolute;
+  left: 8px;
+  top: calc(100% - 6px);
+  height: 3px;
+  width: 60px;
+  background: var(--accent);
+  border-radius: 999px;
+  transition:
+    transform 0.25s ease,
+    width 0.25s ease,
+    opacity 0.25s ease;
+  opacity: 0.95;
+  z-index: 1;
+}
