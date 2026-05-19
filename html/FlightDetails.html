@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sky Trip • Flight Details</title>
+
+    <link rel="stylesheet" href="../css/FlightDetails.css" />
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="topbar">
+        <button class="back" onclick="history.back()">?</button>
+        <div class="top-title">
+          <h1>Flight Details</h1>
+          <p id="airlineSub">Sky Trip Airlines</p>
+        </div>
+      </div>
+
+      <!-- Flight Card -->
+      <div class="card">
+        <div class="flight-head">
+          <div class="plane">?</div>
+          <div class="flight-title">
+            <strong id="airlineName">Loading...</strong>
+            <span id="flightNo">Trip ...</span>
+          </div>
+        </div>
+
+        <!-- Main "first segment" timeline preview -->
+        <div class="timeline" id="timelinePreview">
+          <div>
+            <div class="dot"></div>
+            <div class="line"></div>
+            <div class="dot"></div>
+          </div>
+
+          <div>
+            <div class="time">
+              <strong id="depTime">--:--</strong>
+              <p id="depCity">-</p>
+            </div>
+
+            <div class="duration">? <span id="duration">--</span></div>
+
+            <div class="time">
+              <strong id="arrTime">--:--</strong>
+              <p id="arrCity">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <strong style="font-size: 13px">?? Baggage Information</strong>
+        <div class="row"><span>Cabin</span><span id="cabinKg">--</span></div>
+        <div class="row">
+          <span>Checked</span><span id="checkedKg">--</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <strong style="font-size: 13px">?? Segments</strong>
+        <div class="seglist" id="segmentsHost"></div>
+
+        <div class="error" id="errorBox"></div>
+        <div class="msg" id="statusMsg">Loading from API...</div>
+      </div>
+
+      <!-- Price Card -->
+      <div class="card">
+        <strong style="font-size: 13px">?? Price Breakdown</strong>
+        <div class="row">
+          <span>Base Fare</span><span id="baseFare">--</span>
+        </div>
+        <div class="row"><span>Class Fees</span><span id="taxes">--</span></div>
+        <div class="divider"></div>
+        <div class="row total">
+          <span>Total</span><span id="total">--</span>
+        </div>
+      </div>
+
+      <button id="continueBtn" class="cta cta-primary">
+        Continue to Passenger Info
+      </button>
+
+      <div id="bookErr" class="bookerr"></div>
+
+      <script src="../js/FlightDetails.js" defer></script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sky Trip • SeatMap</title>
+
+    <link rel="stylesheet" href="../css/SeatMap.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div id="hint" class="topHint">Loading booking summary…</div>
+
+      <div class="legend">
+        <span class="chip"
+          ><span class="dot" style="background: var(--available)"></span
+          >Available</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--premium)"></span
+          >Premium</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--selected)"></span
+          >Selected</span
+        >
+        <span class="chip"
+          ><span class="dot" style="background: var(--taken)"></span>Taken</span
+        >
+      </div>
+
+      <div class="card">
+        <div class="titleRow">
+          <div>
+            <div class="title">SeatMap</div>
+            <div id="sub" class="sub">—</div>
+          </div>
+          <div class="sub" id="selectedCount">0 selected</div>
+        </div>
+
+        <div class="plane">
+          <div class="cockpit">Cockpit</div>
+          <div id="rows" class="rows"></div>
+        </div>
+
+        <div class="footer">
+          <button id="confirmBtn" class="btn" disabled>
+            Confirm (0 selected)
+          </button>
+
+          <div class="miniPanel">
+            <div class="miniTitle">Passengers Seats (after assign/confirm)</div>
+            <div id="passSeats" class="list">—</div>
+          </div>
+
+          <div class="miniPanel">
+            <div class="miniTitle">Manual Assign (optional)</div>
+            <div class="row2">
+              <input
+                id="assignPassengerId"
+                class="input"
+                placeholder="PassengerId (e.g. 2007)"
+              />
+              <select id="assignSeatCode" class="select"></select>
+            </div>
+            <div style="height: 8px"></div>
+            <button id="assignBtn" class="btnSmall">
+              Assign selected seat to passenger
+            </button>
+            <div class="sub" style="margin-top: 6px">
+              Tip: this calls <b>PUT /seats/assign</b> using the chosen seat.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="../js/SeatMap.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sky Trip - Selected Flight</title>
+    <link rel="stylesheet" href="../css/selected-flight.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <h2>Selected Flight (Placeholder)</h2>
+
+      <div class="card">
+        <div style="font-weight: 900; margin-bottom: 8px">
+          This page is intentionally simple for now.
+        </div>
+
+        <div
+          style="
+            color: rgba(43, 43, 43, 0.7);
+            font-weight: 800;
+            font-size: 13px;
+          "
+        >
+          We saved the selected flight in
+          <code>sessionStorage.selectedFlight</code>
+        </div>
+
+        <pre id="flightBox">Loading...</pre>
+
+        <button class="btn" id="backBtn">? Back to results</button>
+      </div>
+    </div>
+
+    <script src="../js/selected-flight.js" defer></script>
+  </body>
+</html>

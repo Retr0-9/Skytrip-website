@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sky Trip • Passengers Details</title>
+
+    <link rel="stylesheet" href="../css/Doc.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <section class="card" aria-label="Passenger Form">
+        <div class="topbar">
+          <div class="progress-line" aria-hidden="true">
+            <span id="progressFill"></span>
+          </div>
+          <div class="progress-meta">
+            <span id="progressText">Loading…</span>
+            <span class="badge" id="bookBadge">Book #—</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <h2 class="title" id="formTitle">Passenger Information</h2>
+
+          <form id="passengerForm" autocomplete="on">
+            <div class="grid">
+              <div class="field">
+                <label>First Name <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <input id="firstName" required placeholder="First Name" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Last Name <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <input id="lastName" required placeholder="Last Name" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Second Name</label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <path d="M20 8v6"></path>
+                    <path d="M23 11h-6"></path>
+                  </svg>
+                  <input id="secondName" placeholder="Second Name" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Third Name</label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <path d="M19 8l4 4-4 4"></path>
+                  </svg>
+                  <input id="thirdName" placeholder="Third Name" />
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Email <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M4 4h16v16H4z"></path>
+                    <path d="m22 6-10 7L2 6"></path>
+                  </svg>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="user@example.com"
+                  />
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Phone <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.86.31 1.7.57 2.5a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.58-1.09a2 2 0 0 1 2.11-.45c.8.26 1.64.45 2.5.57A2 2 0 0 1 22 16.92z"
+                    ></path>
+                  </svg>
+                  <input id="phone" required placeholder="+9627xxxxxxx" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Date of Birth <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                    <path d="M16 2v4M8 2v4M3 10h18"></path>
+                  </svg>
+                  <input id="birthDate" type="date" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Gender <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+                  </svg>
+                  <select id="gender" required>
+                    <option value="" selected disabled>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Issued Country <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M2 12h20"></path>
+                    <path d="M12 2a15 15 0 0 1 0 20"></path>
+                    <path d="M12 2a15 15 0 0 0 0 20"></path>
+                  </svg>
+                  <select id="issueCountryId" required>
+                    <option value="" selected disabled>
+                      Loading countries…
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Document Type <span class="req">*</span></label>
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="docType"
+                      value="Passport"
+                      checked
+                    />
+                    Passport
+                  </label>
+                  <label>
+                    <input type="radio" name="docType" value="ID" />
+                    ID
+                  </label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Expiration Date <span class="req">*</span></label>
+                <div class="input">
+                  <svg
+                    class="icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                    <path d="M16 2v4M8 2v4M3 10h18"></path>
+                    <path d="M8 14h8"></path>
+                  </svg>
+                  <input id="expirationDate" type="date" required />
+                </div>
+                <div class="hint">
+                  Expiration is required by your API (Swagger shows it
+                  required).
+                </div>
+              </div>
+
+              <div class="field full">
+                <label
+                  >Upload Document <span class="req">*</span>
+                  <span style="color: var(--muted); font-weight: 700"
+                    >(PDF or Photo)</span
+                  ></label
+                >
+
+                <div class="upload-grid">
+                  <div
+                    class="drop"
+                    id="uploadPdfBtn"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Upload PDF"
+                  >
+                    <svg
+                      class="ico"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <path d="M7 10l5-5 5 5"></path>
+                      <path d="M12 5v14"></path>
+                    </svg>
+                    <div>
+                      <strong>Upload File</strong>
+                      <small>PDF / JPG / PNG</small>
+                    </div>
+                  </div>
+
+                  <div
+                    class="drop"
+                    id="takePhotoBtn"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Take Photo"
+                  >
+                    <svg
+                      class="ico"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      ></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <div>
+                      <strong>Take Photo</strong>
+                      <small>Camera capture</small>
+                    </div>
+                  </div>
+                </div>
+
+                <input
+                  id="docFile"
+                  type="file"
+                  accept=".pdf,image/*"
+                  style="display: none"
+                  required
+                />
+                <input
+                  id="docPhoto"
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  style="display: none"
+                />
+
+                <div class="status">
+                  <span class="dot" id="docDot"></span>
+                  <span id="docStatus">No document selected</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="btn btn-ghost" id="refreshBtn">
+                Refresh
+              </button>
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span id="submitText">Next Passenger</span>
+                <span aria-hidden="true">?</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="../js/Doc.js" defer></script>
+  </body>
+</html>

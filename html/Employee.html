@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sky Trip • Employee Dashboard</title>
+
+    <link rel="stylesheet" href="../css/Employee.css" />
+  </head>
+  <body>
+    <div class="appShell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brandBadge">??</div>
+          <div>
+            <h1>Sky Trip Employee</h1>
+            <p id="apiStatus">API connected</p>
+          </div>
+        </div>
+
+        <div class="roleCard">
+          <small>ACTIVE DASHBOARD</small>
+          <div
+            class="helper"
+            style="color: rgba(255, 255, 255, 0.85); margin-top: 6px"
+          >
+            Employee Panel
+          </div>
+        </div>
+
+        <div class="navGroupTitle">Navigation</div>
+        <nav class="nav" id="sideNav"></nav>
+
+        <div class="sidebarFooter">
+          <div class="user">
+            <div class="avatar" id="sidebarAvatar">U</div>
+            <div>
+              <strong id="sidebarName">User</strong>
+              <span id="sidebarRole">Employee</span>
+            </div>
+          </div>
+          <button class="ghostBtn" id="logoutBtn" type="button">Logout</button>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="topbar">
+          <div>
+            <h2 id="pageTitle">Employee Dashboard</h2>
+            <p id="pageSubtitle">
+              Update flights, follow bookings, and help operations run smoothly.
+            </p>
+          </div>
+
+          <div class="topbarActions">
+            <div class="searchWrap">
+              <span>??</span>
+              <input
+                id="globalSearch"
+                placeholder="Search flights, bookings, services..."
+              />
+            </div>
+            <button class="primaryBtn" id="quickPrimaryBtn" type="button">
+              + Update Flight
+            </button>
+          </div>
+        </section>
+
+        <section class="stats" id="statsGrid"></section>
+
+        <section class="grid2">
+          <div class="panel">
+            <div class="panelHead">
+              <div>
+                <h3 id="tableTitle">Flights</h3>
+                <p id="tableSubtitle">
+                  Live data connected to your API endpoints.
+                </p>
+              </div>
+
+              <div class="filters" id="tableFilters"></div>
+            </div>
+
+            <div class="tableWrap">
+              <table>
+                <thead>
+                  <tr id="tableHeadRow"></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+              <div class="emptyState" id="emptyState" style="display: none">
+                No data yet.
+              </div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="panel">
+              <div class="panelHead">
+                <div>
+                  <h3 id="sidePanelTitle">Quick actions</h3>
+                  <p id="sidePanelSubtitle">
+                    Use the most common actions directly.
+                  </p>
+                </div>
+              </div>
+              <div class="actionGrid" id="actionGrid"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panelHead">
+                <div>
+                  <h3>API endpoints map</h3>
+                  <p>Matched to the confirmed Swagger endpoints.</p>
+                </div>
+              </div>
+              <div class="stack" id="endpointCards"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="drawerBackdrop" id="drawerBackdrop"></div>
+    <aside class="drawer" id="editorDrawer">
+      <div class="drawerHead">
+        <div>
+          <h3 id="drawerTitle">Update Flight</h3>
+          <p id="drawerSubtitle">Update flight schedule records.</p>
+        </div>
+        <button class="xBtn" id="closeDrawerBtn" type="button">?</button>
+      </div>
+
+      <form class="form" id="editorForm"></form>
+    </aside>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="../js/Employee.js" defer></script>
+  </body>
+</html>

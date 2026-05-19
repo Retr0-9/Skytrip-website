@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sky Trip • Payment</title>
+
+    <link rel="stylesheet" href="../css/Payment.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <h1 class="title">Payment</h1>
+        <div class="hint" id="hint">Loading payment status…</div>
+      </div>
+
+      <div class="grid">
+        <!-- LEFT: Summary -->
+        <div class="card">
+          <div class="card-head">
+            <h2>Ticket Summary</h2>
+            <span class="pill" id="pill">Loading…</span>
+          </div>
+
+          <div class="card-body" id="summary">
+            <div class="row">
+              <div class="k">Ticket ID</div>
+              <div class="v" id="ticketId">—</div>
+            </div>
+
+            <div class="row">
+              <div class="k">Book ID</div>
+              <div class="v" id="bookId">—</div>
+            </div>
+
+            <div class="row">
+              <div class="k">Currency</div>
+              <div class="v" id="currency">—</div>
+            </div>
+
+            <div class="row">
+              <div class="k">Payment status</div>
+              <div class="v" id="payStatus">—</div>
+            </div>
+
+            <div class="row">
+              <div class="k">Booking reference</div>
+              <div class="v" id="ref">—</div>
+            </div>
+
+            <div class="total">
+              <div class="k">Total</div>
+              <div class="v" id="total">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Pay box -->
+        <div class="card">
+          <div class="card-head">
+            <h2>Pay securely</h2>
+          </div>
+          <div class="card-body">
+            <button class="btn" id="payBtn" disabled>Pay with Card</button>
+            <p class="small" id="payHelp">
+              You'll be redirected to Stripe Checkout to enter card details.
+              After payment, your booking will be confirmed automatically.
+            </p>
+
+            <div class="note">
+              <b>Test card:</b> 4242 4242 4242 4242 • Any future date • Any CVC
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="../js/Payment.js" defer></script>
+  </body>
+</html>

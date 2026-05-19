@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="../css/shared-header.css" />
+    <script src="../js/shared-header.js" defer></script>
+    <title>Sky Trip • Book Your Flight</title>
+
+    <link rel="stylesheet" href="../css/BookingPage.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="stickyHeader" data-active-tab="book">
+      <div class="hTop">
+        <div class="hBrand">
+          <div class="hBadge" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 16.5L13 13V21L11 20L9 21V13L3 10.5V8.5L9 10V3.5C9 2.7 9.7 2 10.5 2H13.5C14.3 2 15 2.7 15 3.5V10L21 8.5V16.5Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1>Sky Trip</h1>
+            <p id="miniStatus">Connected</p>
+          </div>
+        </div>
+
+        <div class="hActions">
+          <div class="hPill" id="userPill" title="Profile">
+            <div class="hAvatar" id="avatar">U</div>
+            <div
+              style="display: flex; flex-direction: column; line-height: 1.15"
+            >
+              <strong style="font-size: 12px" id="username">User</strong>
+              <span style="font-size: 12px; color: var(--muted)"
+                >Welcome back</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hTabsWrap">
+        <div class="hTabs" id="tabs">
+          <div class="hIndicator" id="indicator"></div>
+
+          <button class="hTab" data-tab="home">
+            <span>⌂</span><span>Home</span>
+          </button>
+          <button class="hTab active" data-tab="book">
+            <span>✈</span><span>Book</span>
+          </button>
+          <button class="hTab" data-tab="tickets">
+            <span>🎟</span><span>Tickets</span>
+          </button>
+          <button class="hTab" data-tab="profile">
+            <span>👤</span><span>Profile</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Page Header -->
+      <div class="pageHeader">
+        <h1>Book Your Flight</h1>
+        <p>Search for the best flights and start your journey</p>
+      </div>
+
+      <div class="card">
+        <div class="seg" id="tripSeg">
+          <div class="seg-ind" id="segInd"></div>
+          <button class="active" data-ui="oneway">One Way</button>
+          <button data-ui="round">Round Trip</button>
+          <button data-ui="multi">Multi City</button>
+        </div>
+
+        <form class="form" id="bookingForm" novalidate>
+          <!-- Single/Round -->
+          <div id="singleBlock">
+            <div class="row2">
+              <div>
+                <p class="label">📍 From (City)</p>
+                <div class="field">
+                  <div class="icon">🛫</div>
+                  <select id="fromCountry" required>
+                    <option value="" selected disabled>Departure city</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <p class="label">📍 To (City)</p>
+                <div class="field">
+                  <div class="icon">🛬</div>
+                  <select id="toCountry" required>
+                    <option value="" selected disabled>Arrival city</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div>
+                <p class="label">📅 Departure</p>
+                <div class="field">
+                  <div class="icon">📆</div>
+                  <input id="departDate" type="date" required />
+                </div>
+              </div>
+
+              <div id="returnWrap">
+                <p class="label">📅 Return</p>
+                <div class="field">
+                  <div class="icon">📆</div>
+                  <input id="returnDate" type="date" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MultiCity -->
+          <div class="mc-wrap" id="multiBlock">
+            <div class="mc-head">
+              <div>
+                <div class="sectionTitle">MultiCity Legs</div>
+                <div class="hint">
+                  Add 2 to 4 legs. Each leg uses DepartureCity / ArrivalCity.
+                </div>
+              </div>
+              <button type="button" class="link-btn" id="addLegBtn">
+                + Add leg
+              </button>
+            </div>
+            <div id="legsHost"></div>
+          </div>
+
+          <!-- Passengers + Class -->
+          <div class="row2">
+            <div>
+              <p class="label">👥 Passengers</p>
+              <div class="field" id="passengersTrigger" style="cursor: pointer">
+                <div class="icon">👤</div>
+                <input id="passengersText" readonly value="1 Passenger" />
+              </div>
+
+              <div class="panel" id="passengersPanel">
+                <div class="p-row" data-type="adults">
+                  <div>
+                    <div class="p-title">Adults</div>
+                    <div class="p-sub">12+ years</div>
+                  </div>
+                  <div class="p-ctrl">
+                    <button
+                      type="button"
+                      class="mini-btn minus"
+                      data-action="dec"
+                    >
+                      −
+                    </button>
+                    <div class="count" data-count>1</div>
+                    <button
+                      type="button"
+                      class="mini-btn plus"
+                      data-action="inc"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p-row" data-type="youth">
+                  <div>
+                    <div class="p-title">Youth</div>
+                    <div class="p-sub">12–16 years</div>
+                  </div>
+                  <div class="p-ctrl">
+                    <button
+                      type="button"
+                      class="mini-btn minus"
+                      data-action="dec"
+                    >
+                      −
+                    </button>
+                    <div class="count" data-count>0</div>
+                    <button
+                      type="button"
+                      class="mini-btn plus"
+                      data-action="inc"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p-row" data-type="children">
+                  <div>
+                    <div class="p-title">Children</div>
+                    <div class="p-sub">2–12 years</div>
+                  </div>
+                  <div class="p-ctrl">
+                    <button
+                      type="button"
+                      class="mini-btn minus"
+                      data-action="dec"
+                    >
+                      −
+                    </button>
+                    <div class="count" data-count>0</div>
+                    <button
+                      type="button"
+                      class="mini-btn plus"
+                      data-action="inc"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p-row" data-type="infants">
+                  <div>
+                    <div class="p-title">Infants</div>
+                    <div class="p-sub">0–2 years (1 per adult)</div>
+                  </div>
+                  <div class="p-ctrl">
+                    <button
+                      type="button"
+                      class="mini-btn minus"
+                      data-action="dec"
+                    >
+                      −
+                    </button>
+                    <div class="count" data-count>0</div>
+                    <button
+                      type="button"
+                      class="mini-btn plus"
+                      data-action="inc"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div class="p-footer">Maximum 4 passengers total</div>
+              </div>
+            </div>
+
+            <div>
+              <p class="label">🧳 Class</p>
+              <div class="field">
+                <div class="icon">✈️</div>
+                <select id="passengerClass" required>
+                  <option value="" selected disabled>Loading...</option>
+                </select>
+              </div>
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--muted);
+                  margin-top: 10px;
+                  font-weight: 700;
+                "
+              >
+                Loaded from <code id="pclassPath">/api/PassengerClass/All</code>
+              </div>
+            </div>
+          </div>
+
+          <button class="cta" type="submit" id="searchBtn">
+            <span>Search Flights</span> <span>→</span>
+          </button>
+
+          <div class="status">
+            <span
+              ><strong>Single:</strong>
+              <code>/api/FlightSchedules/Search</code></span
+            >
+            <span
+              ><strong>Multi:</strong>
+              <code>/api/FlightSchedules/SearchMultiCity</code></span
+            >
+            <span id="statusText">Ready</span>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Client modal -->
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal">
+        <div class="modal-head">
+          <strong>Set Client ID</strong>
+          <button class="x" id="closeModalBtn">✕</button>
+        </div>
+
+        <div style="display: grid; gap: 16px">
+          <div>
+            <p class="label">Client ID</p>
+            <div class="field">
+              <div class="icon">👤</div>
+              <input
+                id="clientIdInput"
+                inputmode="numeric"
+                placeholder="Example: 5"
+              />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: flex-end">
+            <button type="button" class="btn" id="clearClientBtn">Clear</button>
+            <button type="button" class="btn primary" id="saveClientBtn">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/BookingPage.js" defer></script>
+  </body>
+</html>

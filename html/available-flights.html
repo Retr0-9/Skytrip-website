@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="../css/shared-header.css" />
+    <script src="../js/shared-header.js" defer></script>
+    <title>Sky Trip • Available Flights</title>
+
+    <link rel="stylesheet" href="../css/available-flights.css" />
+  </head>
+
+  <body>
+    <header class="stickyHeader" data-active-tab="book">
+      <div class="hTop">
+        <div class="hBrand">
+          <div class="hBadge" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 16.5L13 13V21L11 20L9 21V13L3 10.5V8.5L9 10V3.5C9 2.7 9.7 2 10.5 2H13.5C14.3 2 15 2.7 15 3.5V10L21 8.5V16.5Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1>Sky Trip</h1>
+            <p id="miniStatus">Results</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hTabsWrap">
+        <div class="hTabs" id="tabs">
+          <div class="hIndicator" id="indicator"></div>
+          <button class="hTab" data-tab="home">
+            <span>⌂</span><span>Home</span>
+          </button>
+          <button class="hTab active" data-tab="book">
+            <span>✈</span><span>Book</span>
+          </button>
+          <button class="hTab" data-tab="tickets">
+            <span>🎟</span><span>Tickets</span>
+          </button>
+          <button class="hTab" data-tab="profile">
+            <span>👤</span><span>Profile</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="top">
+        <div class="title">
+          <h2>Available Flights</h2>
+          <p id="subtitle">Showing search results</p>
+        </div>
+        <div class="pill" id="pillInfo">—</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="list" id="list"></div>
+          <div class="empty" id="empty" style="display: none">
+            No flights found. Go back and try different dates/cities.
+          </div>
+        </div>
+
+        <div class="card side">
+          <h3>Search Summary</h3>
+          <div class="kv" id="summary"></div>
+
+          <div
+            style="
+              margin-top: 20px;
+              display: flex;
+              gap: 10px;
+              flex-wrap: wrap;
+              position: relative;
+              z-index: 1;
+            "
+          >
+            <button class="btn" id="backBtn">← Back</button>
+            <button class="btn" id="clearBtn">Clear Results</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../js/available-flights.js" defer></script>
+  </body>
+</html>
