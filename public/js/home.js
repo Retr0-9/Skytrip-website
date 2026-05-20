@@ -61,16 +61,16 @@
 
           switch (tab) {
             case "home":
-              window.location.href = "home.html";
+              window.location.href = "/index.html";
               break;
             case "book":
-              window.location.href = "BookingPage.html";
+              window.location.href = "/html/BookingPage.html";
               break;
             case "tickets":
-              window.location.href = "Ticket.html";
+              window.location.href = "/html/Ticket.html";
               break;
             case "profile":
-              window.location.href = "Profile.html";
+              window.location.href = "/html/Profile.html";
               break;
           }
         });

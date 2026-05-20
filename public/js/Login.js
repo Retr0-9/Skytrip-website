@@ -2,7 +2,7 @@
       const API_BASE_URL =
         "https://bookingtrip-api-2026-cyh0f4dhfednh3fj.westeurope-01.azurewebsites.net";
       const LOGIN_ENDPOINT = "/api/Login/login";
-      const NEXT_PAGE = "Home.html"; // ??????
+      const NEXT_PAGE = "../index.html";
 
       const form = document.getElementById("loginForm");
       const signInBtn = document.getElementById("signInBtn");
@@ -241,7 +241,7 @@
             return;
           }
           if (role.toLowerCase() === "client") {
-            window.location.href = "Home.html";
+            window.location.href = "../index.html";
             return;
           }
           window.location.href = NEXT_PAGE;

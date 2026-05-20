@@ -16,7 +16,7 @@
         uploadProfileImage: "/api/profile/me/image",
       };
 
-      const NEXT_PAGE = "Home.html";
+      const NEXT_PAGE = "../index.html";
 
       const form = document.getElementById("registerForm");
       const registerBtn = document.getElementById("registerBtn");

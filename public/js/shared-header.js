@@ -28,16 +28,16 @@
       const tab = btn.dataset.tab;
       switch (tab) {
         case "home":
-          location.href = "home.html";
+          location.href = "/index.html";
           break;
         case "book":
-          location.href = "BookingPage.html";
+          location.href = "/html/BookingPage.html";
           break;
         case "tickets":
-          location.href = "Ticket.html";
+          location.href = "/html/Ticket.html";
           break;
         case "profile":
-          location.href = "Profile.html";
+          location.href = "/html/Profile.html";
           break;
       }
     });
