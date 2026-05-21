@@ -457,9 +457,9 @@
       function setupTabs() {
         const map = {
           home: "/index.html",
-          book: "/html/BookingPage.html",
-          tickets: "/html/Ticket.html",
-          profile: "/html/Profile.html",
+          book: "/BookingPage.html",
+          tickets: "/Ticket.html",
+          profile: "/Profile.html",
         };
 
         document.querySelectorAll(".hTab").forEach((btn) => {

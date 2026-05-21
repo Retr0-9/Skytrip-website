@@ -64,13 +64,13 @@
               window.location.href = "/index.html";
               break;
             case "book":
-              window.location.href = "/html/BookingPage.html";
+              window.location.href = "/BookingPage.html";
               break;
             case "tickets":
-              window.location.href = "/html/Ticket.html";
+              window.location.href = "/Ticket.html";
               break;
             case "profile":
-              window.location.href = "/html/Profile.html";
+              window.location.href = "/Profile.html";
               break;
           }
         });

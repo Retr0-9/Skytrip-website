@@ -31,13 +31,13 @@
           location.href = "/index.html";
           break;
         case "book":
-          location.href = "/html/BookingPage.html";
+          location.href = "/BookingPage.html";
           break;
         case "tickets":
-          location.href = "/html/Ticket.html";
+          location.href = "/Ticket.html";
           break;
         case "profile":
-          location.href = "/html/Profile.html";
+          location.href = "/Profile.html";
           break;
       }
     });
