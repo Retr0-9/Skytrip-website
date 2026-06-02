@@ -6,12 +6,13 @@
     <title>Sky Trip � Admin Dashboard</title>
 
     <link rel="stylesheet" href="css/Admin.css" />
+    <script src="js/Admin.js" defer></script>
   </head>
   <body>
     <div class="appShell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brandBadge">??</div>
+          <div class="brandBadge">✈️</div>
           <div>
             <h1>Sky Trip Admin</h1>
             <p id="apiStatus">API connected</p>
@@ -54,7 +55,7 @@
 
           <div class="topbarActions">
             <div class="searchWrap">
-              <span>??</span>
+              <span>🔎</span>
               <input
                 id="globalSearch"
                 placeholder="Search trips, employees, cities..."
@@ -128,7 +129,7 @@
           <h3 id="drawerTitle">Create Flight</h3>
           <p id="drawerSubtitle">Add or update flight schedule records.</p>
         </div>
-        <button class="xBtn" id="closeDrawerBtn" type="button">?</button>
+        <button class="xBtn" id="closeDrawerBtn" type="button">✕</button>
       </div>
 
       <form class="form" id="editorForm"></form>
@@ -141,14 +142,14 @@
             <h3>Assign role</h3>
             <p>Admin can assign employee permissions from here.</p>
           </div>
-          <button class="xBtn" id="closeRoleModalBtn" type="button">?</button>
+          <button class="xBtn" id="closeRoleModalBtn" type="button">✕</button>
         </div>
 
         <form class="form" id="roleForm">
           <div>
             <label class="fieldLabel">User Account ID</label>
             <div class="inputWrap">
-              <span>??</span>
+              <span>🆔</span>
               <input
                 id="roleUserId"
                 type="number"
@@ -161,7 +162,7 @@
           <div>
             <label class="fieldLabel">Role</label>
             <div class="inputWrap">
-              <span>???</span>
+              <span>🛡️</span>
               <select id="roleSelect" required>
                 <option value="3">Employee</option>
                 <option value="1">Admin</option>
@@ -184,8 +185,5 @@
     </div>
 
     <div class="toast" id="toast"></div>
-
-    <script src="js/Admin.js" defer></script>
   </body>
 </html>
-
