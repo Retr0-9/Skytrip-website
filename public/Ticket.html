@@ -8,6 +8,7 @@
     <title>Sky Trip • Your Tickets</title>
 
     <link rel="stylesheet" href="css/Ticket.css" />
+    <script src="js/Ticket.js" defer></script>
   </head>
 
   <body>
@@ -69,7 +70,7 @@
       <!-- Page Header -->
       <div class="pageHeader">
         <h1>Your Tickets</h1>
-        <p>View and manage all your flight booking</p>
+        <p>View and manage all your flight bookings</p>
       </div>
 
       <!-- Tools Bar -->
@@ -82,10 +83,20 @@
           />
         </div>
 
-        <label class="chip" title="Show only active bookings">
-          <input type="checkbox" id="onlyActive" checked />
-          <span>Active only</span>
-        </label>
+        <div id="statusTabs" style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button class="chip active" type="button" data-status-filter="all">
+            All
+          </button>
+          <button class="chip" type="button" data-status-filter="confirmed">
+            Confirmed
+          </button>
+          <button class="chip" type="button" data-status-filter="pending">
+            Pending
+          </button>
+          <button class="chip" type="button" data-status-filter="cancelled">
+            Cancelled
+          </button>
+        </div>
 
         <button class="btn primary" id="btnRefresh">🔄 Refresh</button>
         <button class="btn" id="btnClear">✖ Clear</button>
@@ -173,7 +184,5 @@
     </div>
 
     <div class="toast" id="toast"></div>
-
-    <script src="js/Ticket.js" defer></script>
   </body>
 </html>
