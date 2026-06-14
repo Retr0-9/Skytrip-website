@@ -3,15 +3,1288 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Sky Trip � Employee Dashboard</title>
+    <title>Sky Trip • Employee Dashboard</title>
 
-    <link rel="stylesheet" href="css/Employee.css" />
+    <style>
+      :root {
+        --bg: #f4f4fb;
+        --ink: #0f172a;
+        --muted: rgba(100, 116, 139, 1);
+        --line: rgba(148, 163, 184, 0.25);
+        --blue: #38bdf8;
+        --blue-dark: #0284c7;
+        --purple: #a855f7;
+        --green: #22c55e;
+        --yellow: #facc15;
+        --orange: #fb923c;
+        --red: #fb7185;
+        --surface: rgba(255, 255, 255, 0.84);
+        --surface-strong: rgba(255, 255, 255, 0.95);
+        --shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.05);
+        --shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+        --shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.18);
+        --max: 1320px;
+        --sidebar: 280px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+          sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(56, 189, 248, 0.22) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(168, 85, 247, 0.14) 0%,
+            transparent 45%
+          ),
+          linear-gradient(180deg, #f9fbff 0%, #eff6ff 35%, #eef2ff 100%);
+        background-attachment: fixed;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            circle at 25% 20%,
+            rgba(255, 255, 255, 0.45) 0%,
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 75% 75%,
+            rgba(255, 255, 255, 0.22) 0%,
+            transparent 30%
+          );
+      }
+
+      .appShell {
+        max-width: var(--max);
+        margin: 0 auto;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: var(--sidebar) 1fr;
+        gap: 24px;
+        padding: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .sidebar {
+        background: linear-gradient(
+          180deg,
+          rgba(15, 23, 42, 0.96),
+          rgba(30, 41, 59, 0.92)
+        );
+        border-radius: 30px;
+        padding: 22px;
+        color: white;
+        box-shadow: var(--shadow-lg);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: sticky;
+        top: 24px;
+        height: calc(100vh - 48px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brandBadge {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        box-shadow: 0 14px 30px rgba(56, 189, 248, 0.35);
+        font-size: 22px;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 21px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+      }
+
+      .brand p {
+        margin: 4px 0 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .roleCard {
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .roleCard small {
+        display: block;
+        color: rgba(255, 255, 255, 0.72);
+        margin-bottom: 12px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .navGroupTitle {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 4px 0 0;
+        text-transform: uppercase;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .navBtn {
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 14px 16px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 0.25s ease;
+      }
+
+      .navBtn:hover,
+      .navBtn.active {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(3px);
+      }
+
+      .navBtn .left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sidebarFooter {
+        margin-top: auto;
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebarFooter .user {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        color: #082f49;
+      }
+
+      .sidebarFooter strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .sidebarFooter span {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 12px;
+      }
+
+      .ghostBtn,
+      .dangerBtn,
+      .primaryBtn,
+      .softBtn {
+        border: 0;
+        border-radius: 16px;
+        padding: 12px 16px;
+        cursor: pointer;
+        font-weight: 900;
+        transition: 0.25s ease;
+        font-size: 13px;
+      }
+
+      .primaryBtn {
+        background: linear-gradient(135deg, var(--blue), #74b9ff);
+        color: #082f49;
+        box-shadow: 0 14px 24px rgba(56, 189, 248, 0.24);
+      }
+
+      .softBtn {
+        background: rgba(15, 23, 42, 0.06);
+        color: var(--ink);
+      }
+
+      .ghostBtn {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        width: 100%;
+      }
+
+      .dangerBtn {
+        background: rgba(251, 113, 133, 0.12);
+        color: #be123c;
+      }
+
+      .primaryBtn:hover,
+      .softBtn:hover,
+      .ghostBtn:hover,
+      .dangerBtn:hover {
+        transform: translateY(-2px);
+      }
+
+      .content {
+        display: grid;
+        gap: 22px;
+        min-width: 0;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 10px 4px;
+      }
+
+      .topbar h2 {
+        margin: 0;
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: -1.2px;
+        background: linear-gradient(
+          135deg,
+          #0f172a,
+          var(--blue-dark),
+          var(--purple)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .topbar p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .topbarActions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .searchWrap {
+        min-width: 280px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow-sm);
+        border-radius: 18px;
+        padding: 14px 18px;
+      }
+
+      .searchWrap input {
+        border: 0;
+        outline: none;
+        background: transparent;
+        width: 100%;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .statCard,
+      .panel,
+      .drawer,
+      .modal {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.96),
+          rgba(255, 255, 255, 0.84)
+        );
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        box-shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+      }
+
+      .statCard {
+        border-radius: 26px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .statLabel {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .statValue {
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: -1px;
+      }
+
+      .statSub {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .panel {
+        border-radius: 28px;
+        padding: 24px;
+      }
+
+      .panelHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .panelHead h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+      }
+
+      .panelHead p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 14px;
+        background: rgba(15, 23, 42, 0.06);
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .chip.active {
+        background: linear-gradient(135deg, var(--blue), #74b9ff);
+        color: #082f49;
+      }
+
+      .tableWrap {
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 15px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      th {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+      }
+
+      td {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .rowActions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .badge.green {
+        background: rgba(34, 197, 94, 0.12);
+        color: #15803d;
+      }
+
+      .badge.orange {
+        background: rgba(251, 146, 60, 0.14);
+        color: #c2410c;
+      }
+
+      .badge.red {
+        background: rgba(251, 113, 133, 0.14);
+        color: #be123c;
+      }
+
+      .badge.blue {
+        background: rgba(56, 189, 248, 0.14);
+        color: #0369a1;
+      }
+
+      .stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .miniCard {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .miniCard h4 {
+        margin: 0 0 8px;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .miniCard p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+        font-weight: 600;
+      }
+
+      .actionGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .actionCard {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        transition: 0.25s ease;
+      }
+
+      .actionCard:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .actionCard strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .actionCard span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .emptyState {
+        padding: 30px 18px;
+        text-align: center;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .drawerBackdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.36);
+        backdrop-filter: blur(7px);
+        display: none;
+        z-index: 40;
+      }
+
+      .drawerBackdrop.show {
+        display: block;
+      }
+
+      .drawer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        bottom: 20px;
+        width: min(620px, calc(100vw - 24px));
+        border-radius: 28px;
+        padding: 24px;
+        z-index: 41;
+        transform: translateX(120%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: auto;
+      }
+
+      .drawer.show {
+        transform: translateX(0);
+      }
+
+      .drawerHead {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .drawerHead h3 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .drawerHead p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .xBtn {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 0;
+        background: rgba(15, 23, 42, 0.06);
+        font-size: 18px;
+        cursor: pointer;
+        font-weight: 900;
+      }
+
+      .form {
+        display: grid;
+        gap: 16px;
+      }
+
+      .row2,
+      .row3 {
+        display: grid;
+        gap: 14px;
+      }
+
+      .row2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .row3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .fieldLabel {
+        display: block;
+        font-size: 12px;
+        color: var(--ink);
+        font-weight: 900;
+        margin-bottom: 8px;
+      }
+
+      .inputWrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: white;
+        border-radius: 18px;
+        border: 2px solid rgba(148, 163, 184, 0.22);
+        padding: 14px 16px;
+      }
+
+      .inputWrap input,
+      .inputWrap select {
+        width: 100%;
+        border: 0;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .formFooter {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .helper {
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 8px;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%) translateY(30px);
+        background: rgba(15, 23, 42, 0.92);
+        color: white;
+        padding: 14px 18px;
+        border-radius: 16px;
+        box-shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+        font-weight: 800;
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 120;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .modalBackdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.36);
+        backdrop-filter: blur(7px);
+        display: none;
+        z-index: 40;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modalBackdrop.show {
+        display: flex;
+      }
+
+      .modal {
+        width: min(520px, calc(100vw - 24px));
+        border-radius: 28px;
+        padding: 24px;
+        z-index: 45;
+      }
+
+      .modal.reviewModal {
+        width: min(980px, calc(100vw - 24px));
+      }
+
+      .modalHead {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .modalHead h3 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .modalHead p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .reviewGrid {
+        display: grid;
+        gap: 14px;
+        max-height: 70vh;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .reviewSummary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .summaryBox {
+        border-radius: 18px;
+        padding: 14px;
+        background: rgba(15, 23, 42, 0.05);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+      }
+
+      .summaryBox span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+      }
+
+      .summaryBox strong {
+        display: block;
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .passengerReviewCard {
+        border-radius: 22px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .passengerReviewHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .passengerReviewHead h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .passengerDetails {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .detailItem {
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.04);
+      }
+
+      .detailItem span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        margin-bottom: 4px;
+      }
+
+      .detailItem strong {
+        font-size: 13px;
+        font-weight: 800;
+        word-break: break-word;
+      }
+
+      .docPreview {
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        background: rgba(15, 23, 42, 0.04);
+      }
+
+      .docPreview img,
+      .docPreview iframe {
+        display: block;
+        width: 100%;
+        min-height: 280px;
+        border: 0;
+        object-fit: contain;
+        background: white;
+      }
+
+      .docMissing {
+        padding: 18px;
+        color: var(--muted);
+        font-weight: 800;
+        text-align: center;
+      }
+
+      @media (max-width: 1180px) {
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .appShell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          top: 0;
+          height: auto;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .stats,
+        .actionGrid,
+        .row2,
+        .row3,
+        .reviewSummary,
+        .passengerDetails {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar h2 {
+          font-size: 28px;
+        }
+
+        .searchWrap {
+          min-width: 100%;
+        }
+      }
+
+      /* ===== Responsive Design Fixes ===== */
+      @media (max-width: 1180px) {
+        :root {
+          --max: 100%;
+          --sidebar: 250px;
+        }
+
+        .appShell {
+          padding: 18px;
+          gap: 18px;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .appShell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          top: 0;
+          height: auto;
+          border-radius: 24px;
+        }
+
+        .nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .navBtn {
+          justify-content: center;
+        }
+
+        .navBtn > span:last-child {
+          display: none;
+        }
+
+        .topbar {
+          align-items: stretch;
+        }
+
+        .topbar > div:first-child,
+        .topbarActions,
+        .searchWrap {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 760px) {
+        body {
+          background-attachment: scroll;
+        }
+
+        .appShell {
+          padding: 12px;
+          gap: 14px;
+        }
+
+        .sidebar,
+        .panel,
+        .statCard,
+        .drawer,
+        .modal {
+          border-radius: 20px;
+        }
+
+        .brandBadge {
+          width: 46px;
+          height: 46px;
+          border-radius: 15px;
+        }
+
+        .brand h1 {
+          font-size: 18px;
+        }
+
+        .roleCard,
+        .sidebarFooter {
+          padding: 14px;
+        }
+
+        .topbar h2 {
+          font-size: clamp(24px, 8vw, 30px);
+          letter-spacing: -0.8px;
+        }
+
+        .topbar p {
+          font-size: 13px;
+          line-height: 1.5;
+        }
+
+        .searchWrap {
+          min-width: 0;
+          padding: 12px 14px;
+        }
+
+        .stats,
+        .row2,
+        .row3,
+        .reviewSummary,
+        .passengerDetails {
+          grid-template-columns: 1fr;
+        }
+
+        .statCard,
+        .panel {
+          padding: 16px;
+        }
+
+        .statValue {
+          font-size: 28px;
+        }
+
+        .panelHead {
+          display: grid;
+          gap: 14px;
+        }
+
+        .filters {
+          width: 100%;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 4px;
+        }
+
+        .chip {
+          white-space: nowrap;
+          flex: 0 0 auto;
+        }
+
+        .tableWrap {
+          overflow: visible;
+        }
+
+        table,
+        thead,
+        tbody,
+        tr,
+        th,
+        td {
+          display: block;
+          width: 100%;
+        }
+
+        table {
+          min-width: 0;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tbody {
+          display: grid;
+          gap: 12px;
+        }
+
+        tr {
+          padding: 12px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.78);
+          border: 1px solid rgba(148, 163, 184, 0.22);
+          box-shadow: var(--shadow-sm);
+        }
+
+        td {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          padding: 10px 4px;
+          border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+          text-align: right;
+          word-break: break-word;
+        }
+
+        td:last-child {
+          border-bottom: 0;
+        }
+
+        td::before {
+          content: attr(data-label);
+          color: var(--muted);
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+          text-align: left;
+          flex: 0 0 42%;
+        }
+
+        .rowActions {
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .rowActions .softBtn,
+        .rowActions .primaryBtn,
+        .rowActions .dangerBtn {
+          flex: 1 1 120px;
+        }
+
+        .drawer {
+          top: 8px;
+          right: 8px;
+          bottom: 8px;
+          width: calc(100vw - 16px);
+          padding: 18px;
+        }
+
+        .modalBackdrop {
+          align-items: stretch;
+          justify-content: stretch;
+          padding: 8px;
+        }
+
+        .modal,
+        .modal.reviewModal {
+          width: 100%;
+          max-height: calc(100vh - 16px);
+          overflow: auto;
+          padding: 18px;
+        }
+
+        .docPreview img,
+        .docPreview iframe {
+          min-height: 220px;
+        }
+
+        .formFooter {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .appShell {
+          padding: 8px;
+        }
+
+        .sidebar,
+        .panel,
+        .statCard {
+          border-radius: 18px;
+        }
+
+        .nav {
+          grid-template-columns: 1fr;
+        }
+
+        .navBtn {
+          justify-content: space-between;
+        }
+
+        .navBtn > span:last-child {
+          display: inline;
+        }
+
+        .topbar h2 {
+          font-size: 23px;
+        }
+
+        td {
+          display: grid;
+          grid-template-columns: 1fr;
+          text-align: left;
+          gap: 6px;
+        }
+
+        td::before {
+          flex: none;
+        }
+
+        .toast {
+          left: 8px;
+          right: 8px;
+          transform: translateY(30px);
+          text-align: center;
+        }
+
+        .toast.show {
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== Consistency fix: keep header/stat cards identical between tabs ===== */
+      .content {
+        align-content: start;
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+        align-items: start;
+        gap: 18px;
+        min-height: 86px;
+        margin: 0;
+      }
+
+      .topbarActions {
+        justify-content: flex-end;
+        width: 100%;
+      }
+
+      .searchWrap {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 18px;
+        margin: 0;
+      }
+
+      .statCard {
+        min-height: 132px;
+        height: 132px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      @media (max-width: 1180px) {
+        .stats {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        .topbar {
+          grid-template-columns: 1fr;
+          min-height: 0;
+        }
+
+        .topbarActions {
+          justify-content: stretch;
+        }
+
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .statCard {
+          height: auto;
+          min-height: 116px;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="appShell">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brandBadge">??</div>
+          <div class="brandBadge">✈️</div>
           <div>
             <h1>Sky Trip Employee</h1>
             <p id="apiStatus">API connected</p>
@@ -48,21 +1321,18 @@
           <div>
             <h2 id="pageTitle">Employee Dashboard</h2>
             <p id="pageSubtitle">
-              Update flights, follow bookings, and help operations run smoothly.
+              Update flights, follow bookings, and review booking information.
             </p>
           </div>
 
           <div class="topbarActions">
             <div class="searchWrap">
-              <span>??</span>
+              <span>🔎</span>
               <input
                 id="globalSearch"
                 placeholder="Search flights, bookings, services..."
               />
             </div>
-            <button class="primaryBtn" id="quickPrimaryBtn" type="button">
-              + Update Flight
-            </button>
           </div>
         </section>
 
@@ -93,30 +1363,6 @@
               </div>
             </div>
           </div>
-
-          <div class="stack">
-            <div class="panel">
-              <div class="panelHead">
-                <div>
-                  <h3 id="sidePanelTitle">Quick actions</h3>
-                  <p id="sidePanelSubtitle">
-                    Use the most common actions directly.
-                  </p>
-                </div>
-              </div>
-              <div class="actionGrid" id="actionGrid"></div>
-            </div>
-
-            <div class="panel">
-              <div class="panelHead">
-                <div>
-                  <h3>API endpoints map</h3>
-                  <p>Matched to the confirmed Swagger endpoints.</p>
-                </div>
-              </div>
-              <div class="stack" id="endpointCards"></div>
-            </div>
-          </div>
         </section>
       </main>
     </div>
@@ -128,15 +1374,1152 @@
           <h3 id="drawerTitle">Update Flight</h3>
           <p id="drawerSubtitle">Update flight schedule records.</p>
         </div>
-        <button class="xBtn" id="closeDrawerBtn" type="button">?</button>
+        <button class="xBtn" id="closeDrawerBtn" type="button">✕</button>
       </div>
 
       <form class="form" id="editorForm"></form>
     </aside>
 
+    <div class="modalBackdrop" id="bookingReviewModalBackdrop">
+      <div class="modal reviewModal">
+        <div class="modalHead">
+          <div>
+            <h3 id="bookingReviewTitle">Booking review</h3>
+            <p id="bookingReviewSubtitle">
+              Review passengers and document images before confirmation.
+            </p>
+          </div>
+          <button class="xBtn" id="closeBookingReviewModalBtn" type="button">
+            ✕
+          </button>
+        </div>
+
+        <div id="bookingReviewContent" class="reviewGrid">
+          <div class="emptyState">Loading booking details...</div>
+        </div>
+
+        <div class="formFooter">
+          <button
+            class="softBtn"
+            id="closeBookingReviewFooterBtn"
+            type="button"
+          >
+            Close
+          </button>
+          <button
+            class="primaryBtn"
+            id="confirmReviewedBookingBtn"
+            type="button"
+          >
+            Confirm booking
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
-    <script src="js/Employee.js" defer></script>
+    <script>
+      const API_BASE_URL =
+        "https://bookingtrip-api-2026-cyh0f4dhfednh3fj.westeurope-01.azurewebsites.net";
+
+      const ENDPOINTS = {
+        userMe: "/api/UserAccount/me",
+
+        flightsAll: "/api/FlightSchedules/All",
+        flightById: (id) => `/api/FlightSchedules/${id}`,
+        flightUpdate: (id) => `/api/FlightSchedules/${id}`,
+        flightCities: "/api/FlightSchedules/Cities",
+
+        bookingsAll: "/api/BookingTrip",
+        bookingById: (id) => `/api/BookingTrip/${id}`,
+        bookingConfirm: (id) => `/api/BookingTrip/${id}/confirm`,
+        bookingPassengers: (id) => `/api/bookings/${id}/passengers`,
+
+        infoTicketsByBooking: (bookId) =>
+          `/api/InfoTickets/ByBooking/${bookId}`,
+
+        servicesAll: "/api/Services/All",
+      };
+
+      const state = {
+        role: "Employee",
+        token: localStorage.getItem("auth_token") || "",
+        tab: "flights",
+        user: null,
+        flights: [],
+        bookings: [],
+        services: [],
+        ticketInfo: [],
+        cities: [],
+        filter: "all",
+        editingItem: null,
+        reviewBookingId: null,
+      };
+
+      const view = {
+        title: "Employee Dashboard",
+        subtitle:
+          "Update flights, follow bookings, and review booking information.",
+        nav: [
+          { key: "flights", label: "Flights", icon: "🛫" },
+          { key: "bookings", label: "Bookings", icon: "📋" },
+        ],
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function showToast(message, isError = false) {
+        const el = $("toast");
+        el.textContent = message;
+        el.style.background = isError
+          ? "rgba(190,24,93,.95)"
+          : "rgba(15,23,42,.92)";
+        el.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => el.classList.remove("show"), 2800);
+      }
+
+      function getAuthHeaders() {
+        return state.token ? { Authorization: "Bearer " + state.token } : {};
+      }
+
+      async function parseResponse(res) {
+        const ct = (res.headers.get("content-type") || "").toLowerCase();
+        if (res.status === 204) return null;
+        if (ct.includes("application/json")) return await res.json();
+        const txt = await res.text().catch(() => "");
+        try {
+          return txt ? JSON.parse(txt) : txt;
+        } catch {
+          return txt;
+        }
+      }
+
+      async function apiRequest(path, options = {}) {
+        const url = API_BASE_URL.replace(/\/+$/, "") + path;
+        const res = await fetch(url, {
+          ...options,
+          headers: {
+            Accept: "application/json",
+            ...(options.body instanceof FormData
+              ? {}
+              : { "Content-Type": "application/json" }),
+            ...getAuthHeaders(),
+            ...(options.headers || {}),
+          },
+        });
+
+        const data = await parseResponse(res);
+
+        if (!res.ok) {
+          const message =
+            data?.detail ||
+            data?.message ||
+            data?.title ||
+            (typeof data === "string" ? data : "Request failed");
+          throw new Error(`${res.status} - ${message}`);
+        }
+
+        return data;
+      }
+
+      const apiGet = (path) => apiRequest(path);
+      const apiPost = (path, body) =>
+        apiRequest(path, { method: "POST", body: JSON.stringify(body) });
+      const apiPut = (path, body) =>
+        apiRequest(path, { method: "PUT", body: JSON.stringify(body) });
+
+      function normalizeArray(data) {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data?.data)) return data.data;
+        if (Array.isArray(data?.results)) return data.results;
+        if (Array.isArray(data?.items)) return data.items;
+        return [];
+      }
+
+      function pick(obj, keys, fallback = "") {
+        for (const key of keys) {
+          if (obj && obj[key] != null && obj[key] !== "") return obj[key];
+        }
+        return fallback;
+      }
+
+      function getFlightId(f) {
+        return pick(
+          f,
+          [
+            "flightScheduleID",
+            "FlightScheduleID",
+            "flightScheduleId",
+            "FlightScheduleId",
+            "id",
+            "ID",
+          ],
+          "",
+        );
+      }
+
+      function getBookingId(b) {
+        return pick(
+          b,
+          ["bookID", "BookID", "bookingTripID", "BookingTripID", "id", "ID"],
+          "",
+        );
+      }
+
+      function formatDate(v) {
+        if (!v) return "—";
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? String(v) : d.toLocaleString();
+      }
+
+      function statusBadge(status) {
+        const raw = String(status || "Unknown");
+        const s = raw.toLowerCase();
+        let cls = "blue";
+
+        if (
+          s.includes("confirm") ||
+          s.includes("success") ||
+          s.includes("active")
+        ) {
+          cls = "green";
+        } else if (
+          s.includes("delay") ||
+          s.includes("pending") ||
+          s.includes("postpone")
+        ) {
+          cls = "orange";
+        } else if (
+          s.includes("cancel") ||
+          s.includes("delete") ||
+          s.includes("reject")
+        ) {
+          cls = "red";
+        }
+
+        return `<span class="badge ${cls}">${raw}</span>`;
+      }
+
+      function safeJsonString(obj) {
+        try {
+          return JSON.stringify(obj).toLowerCase();
+        } catch {
+          return "";
+        }
+      }
+
+      function decodeJwt(token) {
+        try {
+          const payload = token.split(".")[1];
+          const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+          return JSON.parse(atob(base64));
+        } catch {
+          return null;
+        }
+      }
+
+      function getUserNameFromPayload(payload) {
+        if (!payload) return "User";
+        const email =
+          payload.email ||
+          payload.Email ||
+          payload.unique_name ||
+          payload.sub ||
+          "";
+        return email ? String(email).split("@")[0] : "User";
+      }
+
+      async function loadCurrentUser() {
+        const decoded = decodeJwt(state.token);
+        const basicName = getUserNameFromPayload(decoded);
+
+        try {
+          const me = await apiGet(ENDPOINTS.userMe);
+          state.user = me || { userNameOrEmail: basicName };
+        } catch {
+          state.user = { userNameOrEmail: basicName };
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("auth_token");
+        window.location.href = "Login.html";
+      }
+
+      function hydrateLayout() {
+        $("pageTitle").textContent = view.title;
+        $("pageSubtitle").textContent = view.subtitle;
+        $("sidebarRole").textContent = "Employee";
+
+        const displayName =
+          pick(
+            state.user,
+            ["fullName", "FullName", "userNameOrEmail", "UserNameOrEmail"],
+            getUserNameFromPayload(decodeJwt(state.token)),
+          ) || "User";
+
+        $("sidebarName").textContent = displayName;
+        $("sidebarAvatar").textContent =
+          String(displayName || "U")
+            .trim()
+            .charAt(0)
+            .toUpperCase() || "U";
+
+        $("sideNav").innerHTML = view.nav
+          .map(
+            (item) => `
+          <button class="navBtn ${item.key === state.tab ? "active" : ""}" data-tab="${item.key}" type="button">
+            <span class="left"><span>${item.icon}</span><span>${item.label}</span></span>
+            <span>›</span>
+          </button>
+        `,
+          )
+          .join("");
+
+        renderStats();
+        renderActiveTable();
+      }
+
+      function renderStats() {
+        const cards = [
+          {
+            label: "Flights",
+            value: state.flights.length,
+            sub: "",
+          },
+          {
+            label: "Bookings",
+            value: state.bookings.length,
+            sub: "",
+          },
+          {
+            label: "Cities",
+            value: state.cities.length,
+            sub: "",
+          },
+          {
+            label: "Ticket Info",
+            value: state.ticketInfo.length,
+            sub: "",
+          },
+        ];
+
+        $("statsGrid").innerHTML = cards
+          .map(
+            (card) => `
+          <div class="statCard">
+            <div class="statLabel">${card.label}</div>
+            <div class="statValue">${card.value}</div>
+            <div class="statSub">${card.sub}</div>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function renderActiveTable() {
+        if (state.tab === "flights") renderFlightsTable();
+        else renderBookingsTable();
+      }
+
+      function setTable(headers, rowsHtml, meta = {}) {
+        $("tableTitle").textContent = meta.title || "Data";
+        $("tableSubtitle").textContent = meta.subtitle || "";
+        $("tableHeadRow").innerHTML = headers
+          .map((h) => `<th>${h}</th>`)
+          .join("");
+        $("tableBody").innerHTML = rowsHtml || "";
+        $("emptyState").style.display = rowsHtml ? "none" : "block";
+        $("tableFilters").innerHTML = (meta.filters || [])
+          .map(
+            (f) =>
+              `<button class="chip ${state.filter === f.key ? "active" : ""}" data-filter="${f.key}" type="button">${f.label}</button>`,
+          )
+          .join("");
+      }
+
+      function renderFlightsTable() {
+        const q = $("globalSearch").value.trim().toLowerCase();
+
+        let list = state.flights.filter((f) => {
+          const hay = safeJsonString(f);
+          return !q || hay.includes(q);
+        });
+
+        if (state.filter === "today") {
+          const today = new Date().toDateString();
+          list = list.filter((f) => {
+            const v = pick(f, ["flightDate", "FlightDate"], "");
+            return v && new Date(v).toDateString() === today;
+          });
+        }
+
+        const rows = list
+          .map((f) => {
+            const id = getFlightId(f);
+            const from = pick(f, ["departureCity", "DepartureCity"], "—");
+            const to = pick(f, ["arrivalCity", "ArrivalCity"], "—");
+            const flightDate = pick(f, ["flightDate", "FlightDate"], "");
+            const departureTime = pick(
+              f,
+              ["departureTime", "DepartureTime"],
+              "—",
+            );
+            const arrivalTime = pick(f, ["arrivalTime", "ArrivalTime"], "—");
+            const basePrice = pick(f, ["basePrice", "BasePrice"], "—");
+            const classFee = pick(f, ["classFee", "ClassFee"], "—");
+            const totalPrice = pick(f, ["totalPrice", "TotalPrice"], "—");
+
+            return `
+            <tr>
+              <td data-label="ID">#${id}</td>
+              <td data-label="From">${from}</td>
+              <td data-label="To">${to}</td>
+              <td data-label="Date">${formatDate(flightDate)}</td>
+              <td data-label="Departure">${departureTime}</td>
+              <td data-label="Arrival">${arrivalTime}</td>
+              <td data-label="Base Price">${basePrice}</td>
+              <td data-label="Class Fee">${classFee}</td>
+              <td data-label="Total Price">${totalPrice}</td>
+              <td data-label="Actions">
+                <div class="rowActions">
+                  <button class="softBtn" type="button" data-edit-flight="${id}">Update</button>
+                </div>
+              </td>
+            </tr>
+          `;
+          })
+          .join("");
+
+        setTable(
+          [
+            "ID",
+            "From",
+            "To",
+            "Date",
+            "Departure",
+            "Arrival",
+            "Base Price",
+            "Class Fee",
+            "Total Price",
+            "Actions",
+          ],
+          rows,
+          {
+            title: "Operational flight schedules",
+            subtitle: "Employee can update flight data.",
+            filters: [
+              { key: "all", label: "All flights" },
+              { key: "today", label: "Today" },
+            ],
+          },
+        );
+      }
+
+      function renderBookingsTable() {
+        const q = $("globalSearch").value.trim().toLowerCase();
+
+        let list = state.bookings.filter(
+          (item) => !q || safeJsonString(item).includes(q),
+        );
+
+        if (state.filter === "pending") {
+          list = list.filter((b) =>
+            String(pick(b, ["bookingStatus", "BookingStatus"], ""))
+              .toLowerCase()
+              .includes("pending"),
+          );
+        } else if (state.filter === "confirmed") {
+          list = list.filter((b) => {
+            const confirmed = pick(b, ["isConfirmed", "IsConfirmed"], false);
+            const status = String(
+              pick(b, ["bookingStatus", "BookingStatus"], ""),
+            );
+            return confirmed || /confirm/i.test(status);
+          });
+        }
+
+        const rows = list
+          .map((b) => {
+            const id = getBookingId(b);
+            const client = pick(b, ["clientID", "ClientID"], "—");
+            const tripType = pick(b, ["tripTypeID", "TripTypeID"], "—");
+            const created = pick(b, ["bookingDate", "BookingDate"], "");
+            const bookingRef = pick(
+              b,
+              ["bookingReference", "BookingReference"],
+              "—",
+            );
+            const status = pick(
+              b,
+              ["bookingStatus", "BookingStatus"],
+              pick(b, ["isConfirmed", "IsConfirmed"], false)
+                ? "Confirmed"
+                : "Pending",
+            );
+
+            return `
+            <tr>
+              <td data-label="ID">#${id}</td>
+              <td data-label="Client ID">${client}</td>
+              <td data-label="TripType ID">${tripType}</td>
+              <td data-label="Booking Date">${formatDate(created)}</td>
+              <td data-label="Reference">${bookingRef}</td>
+              <td data-label="Status">${statusBadge(status)}</td>
+              <td data-label="Actions">
+                <div class="rowActions">
+                  <button class="softBtn" type="button" data-review-booking="${id}">Review</button>
+                  <button class="softBtn" type="button" data-confirm-booking="${id}">Confirm</button>
+                </div>
+              </td>
+            </tr>
+          `;
+          })
+          .join("");
+
+        setTable(
+          [
+            "ID",
+            "Client ID",
+            "TripType ID",
+            "Booking Date",
+            "Reference",
+            "Status",
+            "Actions",
+          ],
+          rows,
+          {
+            title: "Bookings",
+            subtitle:
+              "Employee can review passenger/document information and confirm bookings.",
+            filters: [
+              { key: "all", label: "All bookings" },
+              { key: "pending", label: "Pending" },
+              { key: "confirmed", label: "Confirmed" },
+            ],
+          },
+        );
+      }
+
+      function renderSupportTable() {
+        const q = $("globalSearch").value.trim().toLowerCase();
+
+        const rows = state.services
+          .filter((s) => !q || safeJsonString(s).includes(q))
+          .map(
+            (s) => `
+          <tr>
+            <td>#${pick(s, ["serviceID", "ServiceID"], "—")}</td>
+            <td>${pick(s, ["nameService", "NameService"], "Service")}</td>
+            <td>${pick(s, ["fees", "Fees"], "—")}</td>
+            <td>${statusBadge("Available")}</td>
+            <td><div class="rowActions"><button class="softBtn" type="button">View</button></div></td>
+          </tr>
+        `,
+          )
+          .join("");
+
+        setTable(["ID", "Service", "Fees", "Status", "Actions"], rows, {
+          title: "Support data",
+          subtitle: "Extra supporting data from services endpoint.",
+          filters: [{ key: "all", label: "All" }],
+        });
+      }
+
+      async function loadDashboardData() {
+        $("apiStatus").textContent = "Loading API data...";
+
+        const tasks = await Promise.allSettled([
+          apiGet(ENDPOINTS.flightsAll),
+          apiGet(ENDPOINTS.bookingsAll),
+          apiGet(ENDPOINTS.servicesAll),
+          apiGet(ENDPOINTS.flightCities),
+        ]);
+
+        state.flights =
+          tasks[0].status === "fulfilled" ? normalizeArray(tasks[0].value) : [];
+        state.bookings =
+          tasks[1].status === "fulfilled" ? normalizeArray(tasks[1].value) : [];
+        state.services =
+          tasks[2].status === "fulfilled" ? normalizeArray(tasks[2].value) : [];
+        state.cities =
+          tasks[3].status === "fulfilled" ? normalizeArray(tasks[3].value) : [];
+
+        $("apiStatus").textContent = "API connected";
+        renderStats();
+        renderActiveTable();
+      }
+
+      const flightFormTemplate = (item = {}) => {
+        const cities = state.cities.length
+          ? state.cities
+          : ["Amman", "Dubai", "Istanbul", "Doha"];
+
+        const options = cities
+          .map((c) => `<option value="${c}">${c}</option>`)
+          .join("");
+
+        const from = pick(item, ["departureCity", "DepartureCity"], "");
+        const to = pick(item, ["arrivalCity", "ArrivalCity"], "");
+        const departureTime = toTimeInputValue(
+          pick(item, ["departureTime", "DepartureTime"], ""),
+        );
+        const arrivalTime = toTimeInputValue(
+          pick(item, ["arrivalTime", "ArrivalTime"], ""),
+        );
+        const basePrice = pick(item, ["basePrice", "BasePrice"], "");
+
+        const date = (() => {
+          const v = pick(item, ["flightDate", "FlightDate"], "");
+          if (!v) return "";
+          const d = new Date(v);
+          if (Number.isNaN(d.getTime())) return String(v).slice(0, 10);
+          const iso = new Date(
+            d.getTime() - d.getTimezoneOffset() * 60000,
+          ).toISOString();
+          return iso.slice(0, 10);
+        })();
+
+        const id = getFlightId(item);
+
+        return `
+          <input type="hidden" id="flightId" value="${id}" />
+
+          <div class="row2">
+            <div>
+              <label class="fieldLabel">From city</label>
+              <div class="inputWrap">
+                <span>🛫</span>
+                <select id="flightFrom" required>
+                  <option value="">Select city</option>
+                  ${options}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="fieldLabel">To city</label>
+              <div class="inputWrap">
+                <span>🛬</span>
+                <select id="flightTo" required>
+                  <option value="">Select city</option>
+                  ${options}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row3">
+            <div>
+              <label class="fieldLabel">Flight date</label>
+              <div class="inputWrap">
+                <span>📅</span>
+                <input id="flightDate" type="date" value="${date}" required />
+              </div>
+            </div>
+
+            <div>
+              <label class="fieldLabel">Departure time</label>
+              <div class="inputWrap">
+                <span>🕘</span>
+                <input id="flightDepartureTime" type="time" value="${departureTime}" required />
+              </div>
+            </div>
+
+            <div>
+              <label class="fieldLabel">Arrival time</label>
+              <div class="inputWrap">
+                <span>🕓</span>
+                <input id="flightArrivalTime" type="time" value="${arrivalTime}" required />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="fieldLabel">Base price</label>
+            <div class="inputWrap">
+              <span>💵</span>
+              <input id="flightBasePrice" type="number" min="0" step="0.01" value="${basePrice}" placeholder="e.g. 120" required />
+            </div>
+          </div>
+
+          <div class="formFooter">
+            <button class="softBtn" type="button" id="cancelEditorBtn">Cancel</button>
+            <button class="primaryBtn" type="submit">Save changes</button>
+          </div>
+        `;
+      };
+
+      function openFlightDrawer(item = null) {
+        state.editingItem = item;
+        $("drawerTitle").textContent = "Update Flight";
+        $("drawerSubtitle").textContent =
+          "Update the flight schedule details and save changes.";
+        $("editorForm").innerHTML = flightFormTemplate(item || {});
+        $("drawerBackdrop").classList.add("show");
+        $("editorDrawer").classList.add("show");
+
+        if (item) {
+          $("flightFrom").value = pick(
+            item,
+            ["departureCity", "DepartureCity"],
+            "",
+          );
+          $("flightTo").value = pick(item, ["arrivalCity", "ArrivalCity"], "");
+        }
+      }
+
+      function closeFlightDrawer() {
+        $("drawerBackdrop").classList.remove("show");
+        $("editorDrawer").classList.remove("show");
+        state.editingItem = null;
+      }
+
+      function toTimeInputValue(value) {
+        if (!value) return "";
+        return String(value).slice(0, 5);
+      }
+
+      function normalizeTime(value) {
+        if (!value) return "";
+
+        if (/^\d{2}:\d{2}$/.test(value)) {
+          return value + ":00";
+        }
+
+        if (/^\d{2}:\d{2}:\d{2}$/.test(value)) {
+          return value;
+        }
+
+        const d = new Date(`1970-01-01 ${value}`);
+        if (!Number.isNaN(d.getTime())) {
+          return d.toTimeString().slice(0, 8);
+        }
+
+        return value;
+      }
+
+      function buildFlightDto() {
+        return {
+          departureCity: $("flightFrom").value,
+          arrivalCity: $("flightTo").value,
+          departureTime: normalizeTime($("flightDepartureTime").value),
+          arrivalTime: normalizeTime($("flightArrivalTime").value),
+          flightDate: $("flightDate").value,
+          basePrice: Number($("flightBasePrice").value || 0),
+        };
+      }
+
+      async function submitFlightForm(e) {
+        e.preventDefault();
+
+        try {
+          const dto = buildFlightDto();
+          const id =
+            $("flightId")?.value || getFlightId(state.editingItem || {});
+
+          if (!id) {
+            throw new Error(
+              "Flight ID is missing. Please refresh flights and try again.",
+            );
+          }
+
+          if (!dto.departureCity || !dto.arrivalCity) {
+            throw new Error("Please select flight cities.");
+          }
+
+          if (dto.departureCity === dto.arrivalCity) {
+            throw new Error("From and To cannot be the same.");
+          }
+
+          await apiPut(ENDPOINTS.flightUpdate(id), dto);
+          showToast("Flight updated successfully");
+          closeFlightDrawer();
+          await loadDashboardData();
+        } catch (err) {
+          showToast(err.message || "Failed to save flight", true);
+        }
+      }
+
+      async function confirmBooking(id) {
+        try {
+          await apiPost(ENDPOINTS.bookingConfirm(id), {});
+          showToast(`Booking #${id} confirmed`);
+          await loadDashboardData();
+        } catch (err) {
+          showToast(err.message || "Confirmation failed", true);
+        }
+      }
+
+      function renderTicketInfoCards(items, bookId) {
+        if (!items.length) {
+          return `
+            <div class="emptyState">
+              No ticket information found for booking #${bookId}.
+            </div>
+          `;
+        }
+
+        return items
+          .map((t, index) => {
+            const ticketId = pick(
+              t,
+              [
+                "ticketID",
+                "TicketID",
+                "infoTicketID",
+                "InfoTicketID",
+                "id",
+                "ID",
+              ],
+              index + 1,
+            );
+            const passengerClass = pick(
+              t,
+              ["passengerClassID", "PassengerClassID"],
+              "—",
+            );
+            const ticketPrice = pick(t, ["ticketPrice", "TicketPrice"], "—");
+            const passengersCount = pick(
+              t,
+              ["passengersCount", "PassengersCount"],
+              "—",
+            );
+            const book = pick(t, ["bookID", "BookID"], bookId);
+
+            return `
+              <div class="miniCard">
+                <h4>Ticket #${ticketId}</h4>
+                <p><strong>Booking ID:</strong> ${book}</p>
+                <p><strong>Passenger Class ID:</strong> ${passengerClass}</p>
+                <p><strong>Ticket Price:</strong> ${ticketPrice}</p>
+                <p><strong>Passengers Count:</strong> ${passengersCount}</p>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      async function openTicketDrawer(bookId) {
+        try {
+          $("drawerTitle").textContent = `Ticket Info - Booking #${bookId}`;
+          $("drawerSubtitle").textContent =
+            "Review bookingrmation connected to this booking.";
+          $("editorForm").innerHTML = `
+            <div class="emptyState">Loading ticket information...</div>
+            <div class="formFooter">
+              <button class="softBtn" type="button" id="cancelEditorBtn">Close</button>
+            </div>
+          `;
+          $("drawerBackdrop").classList.add("show");
+          $("editorDrawer").classList.add("show");
+
+          const data = await apiGet(ENDPOINTS.infoTicketsByBooking(bookId));
+          const list = normalizeArray(data);
+          state.ticketInfo = list;
+
+          $("editorForm").innerHTML = `
+            <div class="stack">
+              ${renderTicketInfoCards(list, bookId)}
+            </div>
+            <div class="formFooter">
+              <button class="softBtn" type="button" id="cancelEditorBtn">Close</button>
+            </div>
+          `;
+
+          renderStats();
+        } catch (err) {
+          $("editorForm").innerHTML = `
+            <div class="emptyState">${err.message || "Failed to load ticket information"}</div>
+            <div class="formFooter">
+              <button class="softBtn" type="button" id="cancelEditorBtn">Close</button>
+            </div>
+          `;
+          showToast(err.message || "Failed to load ticket information", true);
+        }
+      }
+
+      function getFullName(p) {
+        return (
+          [
+            pick(p, ["firstName", "FirstName"], ""),
+            pick(p, ["secondName", "SecondName"], ""),
+            pick(p, ["thirdName", "ThirdName"], ""),
+            pick(p, ["lastName", "LastName"], ""),
+          ]
+            .filter(Boolean)
+            .join(" ") || "Unknown passenger"
+        );
+      }
+
+      function getDocBase64(p) {
+        return pick(
+          p,
+          [
+            "documentImageBase64",
+            "DocumentImageBase64",
+            "documentationImageBase64",
+            "DocumentationImageBase64",
+          ],
+          "",
+        );
+      }
+
+      function getDocContentType(p) {
+        return pick(
+          p,
+          [
+            "documentContentType",
+            "DocumentContentType",
+            "documentationContentType",
+            "DocumentationContentType",
+          ],
+          "image/jpeg",
+        );
+      }
+
+      function renderDocumentPreview(passenger) {
+        const base64 = getDocBase64(passenger);
+        const hasDocument = Boolean(
+          pick(passenger, ["hasDocument", "HasDocument"], false),
+        );
+
+        if (!base64) {
+          return `<div class="docMissing">${hasDocument ? "Document exists, but no preview data was returned." : "No document uploaded for this passenger."}</div>`;
+        }
+
+        const contentType = getDocContentType(passenger) || "image/jpeg";
+        const src = `data:${contentType};base64,${base64}`;
+
+        if (contentType.toLowerCase().includes("pdf")) {
+          return `<iframe src="${src}" title="Passenger document PDF"></iframe>`;
+        }
+
+        return `<img src="${src}" alt="Passenger document" />`;
+      }
+
+      function renderBookingReview(data) {
+        const passengers = normalizeArray(data?.passengers || data?.Passengers);
+        const bookId = pick(
+          data,
+          ["bookId", "BookId", "bookID", "BookID"],
+          state.reviewBookingId || "—",
+        );
+        const ticketId = pick(
+          data,
+          ["ticketId", "TicketId", "ticketID", "TicketID"],
+          "—",
+        );
+        const expected = pick(
+          data,
+          ["expectedPassengers", "ExpectedPassengers"],
+          "—",
+        );
+        const created = pick(
+          data,
+          ["createdPassengers", "CreatedPassengers"],
+          passengers.length,
+        );
+
+        $("bookingReviewTitle").textContent = `Booking #${bookId} review`;
+        $("bookingReviewSubtitle").textContent =
+          "Review passenger information and Passport/ID attachment before confirming.";
+
+        const summary = `
+          <div class="reviewSummary">
+            <div class="summaryBox"><span>Book ID</span><strong>#${bookId}</strong></div>
+            <div class="summaryBox"><span>Ticket ID</span><strong>#${ticketId}</strong></div>
+            <div class="summaryBox"><span>Expected</span><strong>${expected}</strong></div>
+            <div class="summaryBox"><span>Created</span><strong>${created}</strong></div>
+          </div>
+        `;
+
+        const cards = passengers.length
+          ? passengers
+              .map((p, index) => {
+                const passengerId = pick(
+                  p,
+                  ["passengerId", "PassengerId", "passengerID", "PassengerID"],
+                  "—",
+                );
+                const personId = pick(
+                  p,
+                  ["personId", "PersonId", "personID", "PersonID"],
+                  "—",
+                );
+                const docType = pick(
+                  p,
+                  ["documentationType", "DocumentationType"],
+                  "—",
+                );
+                const issueCountry = pick(
+                  p,
+                  [
+                    "issueCountryId",
+                    "IssueCountryId",
+                    "issueCountryID",
+                    "IssueCountryID",
+                  ],
+                  "—",
+                );
+                const expiration = pick(
+                  p,
+                  ["expirationDate", "ExpirationDate"],
+                  "",
+                );
+                const birthDate = pick(p, ["birthDate", "BirthDate"], "");
+                const gender = pick(p, ["gender", "Gender"], "—");
+                const hasDocument = pick(
+                  p,
+                  ["hasDocument", "HasDocument"],
+                  false,
+                );
+
+                return `
+                  <div class="passengerReviewCard">
+                    <div class="passengerReviewHead">
+                      <div>
+                        <h4>${index + 1}. ${getFullName(p)}</h4>
+                        <div class="helper">Passenger #${passengerId} • Person #${personId}</div>
+                      </div>
+                      ${statusBadge(hasDocument ? "Document uploaded" : "Missing document")}
+                    </div>
+
+                    <div class="passengerDetails">
+                      <div class="detailItem"><span>Birth date</span><strong>${formatDate(birthDate)}</strong></div>
+                      <div class="detailItem"><span>Gender</span><strong>${gender}</strong></div>
+                      <div class="detailItem"><span>Document type</span><strong>${docType}</strong></div>
+                      <div class="detailItem"><span>Issue country ID</span><strong>${issueCountry}</strong></div>
+                      <div class="detailItem"><span>Expiration date</span><strong>${formatDate(expiration)}</strong></div>
+                      <div class="detailItem"><span>Content type</span><strong>${getDocBase64(p) ? getDocContentType(p) : "—"}</strong></div>
+                    </div>
+
+                    <div class="docPreview">
+                      ${renderDocumentPreview(p)}
+                    </div>
+                  </div>
+                `;
+              })
+              .join("")
+          : `<div class="emptyState">No passengers returned for this booking.</div>`;
+
+        $("bookingReviewContent").innerHTML = summary + cards;
+      }
+
+      async function openBookingReviewModal(bookId) {
+        state.reviewBookingId = bookId;
+        $("bookingReviewTitle").textContent = `Booking #${bookId} review`;
+        $("bookingReviewContent").innerHTML =
+          `<div class="emptyState">Loading booking details...</div>`;
+        $("bookingReviewModalBackdrop").classList.add("show");
+
+        try {
+          const data = await apiGet(ENDPOINTS.bookingPassengers(bookId));
+          renderBookingReview(data);
+        } catch (err) {
+          $("bookingReviewContent").innerHTML =
+            `<div class="emptyState">${err.message || "Failed to load booking details."}</div>`;
+          showToast(err.message || "Failed to load booking details", true);
+        }
+      }
+
+      function closeBookingReviewModal() {
+        $("bookingReviewModalBackdrop").classList.remove("show");
+        state.reviewBookingId = null;
+      }
+
+      async function confirmReviewedBooking() {
+        if (!state.reviewBookingId) return;
+        await confirmBooking(state.reviewBookingId);
+        closeBookingReviewModal();
+      }
+
+      $("logoutBtn").addEventListener("click", logout);
+
+      $("sideNav").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-tab]");
+        if (!btn) return;
+        state.tab = btn.dataset.tab;
+        hydrateLayout();
+      });
+
+      $("globalSearch").addEventListener("input", renderActiveTable);
+
+      $("tableBody").addEventListener("click", (e) => {
+        const editFlight = e.target.closest("[data-edit-flight]");
+        const reviewBtn = e.target.closest("[data-review-booking]");
+        const confirmBtn = e.target.closest("[data-confirm-booking]");
+
+        if (editFlight) {
+          const id = editFlight.dataset.editFlight;
+          const item = state.flights.find(
+            (f) => String(getFlightId(f)) === String(id),
+          );
+          openFlightDrawer(item || { flightScheduleID: id });
+        }
+
+        if (reviewBtn) {
+          openBookingReviewModal(reviewBtn.dataset.reviewBooking);
+        }
+
+        if (confirmBtn) {
+          confirmBooking(confirmBtn.dataset.confirmBooking);
+        }
+      });
+
+      $("tableFilters").addEventListener("click", (e) => {
+        const chip = e.target.closest("[data-filter]");
+        if (!chip) return;
+        state.filter = chip.dataset.filter;
+        renderActiveTable();
+      });
+
+      $("closeDrawerBtn").addEventListener("click", closeFlightDrawer);
+      $("drawerBackdrop").addEventListener("click", closeFlightDrawer);
+
+      $("editorForm").addEventListener("submit", submitFlightForm);
+      $("editorForm").addEventListener("click", (e) => {
+        if (e.target.id === "cancelEditorBtn") closeFlightDrawer();
+      });
+
+      $("closeBookingReviewModalBtn").addEventListener(
+        "click",
+        closeBookingReviewModal,
+      );
+      $("closeBookingReviewFooterBtn").addEventListener(
+        "click",
+        closeBookingReviewModal,
+      );
+      $("bookingReviewModalBackdrop").addEventListener("click", (e) => {
+        if (e.target === $("bookingReviewModalBackdrop"))
+          closeBookingReviewModal();
+      });
+      $("confirmReviewedBookingBtn").addEventListener(
+        "click",
+        confirmReviewedBooking,
+      );
+
+      async function init() {
+        if (!state.token) {
+          window.location.href = "Login.html";
+          return;
+        }
+
+        try {
+          await loadCurrentUser();
+          hydrateLayout();
+          await loadDashboardData();
+        } catch (err) {
+          console.warn(err);
+          localStorage.removeItem("auth_token");
+          window.location.href = "Login.html";
+        }
+      }
+
+      hydrateLayout();
+      init();
+    </script>
   </body>
 </html>
-
