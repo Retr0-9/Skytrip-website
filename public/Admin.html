@@ -2518,9 +2518,51 @@
 
           await sendBookingEmail(
             email,
-            "Booking Deleted",
-            `<h2>Your booking has been deleted</h2>
-       <p>Booking #${id} has been deleted by the admin.</p>`,
+            "✈️ Important Update Regarding Your Booking",
+            `
+  <div style="font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;padding:30px;">
+    <div style="max-width:650px;margin:auto;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);">
+
+      <div style="background:linear-gradient(135deg,#dc2626,#991b1b);padding:30px;text-align:center;color:white;">
+        <h1 style="margin:0;">Booking Cancellation Notice</h1>
+        <p style="margin-top:10px;">Reference #${id}</p>
+      </div>
+
+      <div style="padding:35px;">
+        <h2>Hello,</h2>
+
+        <p style="font-size:16px;line-height:1.8;color:#374151;">
+          We regret to inform you that your booking has been cancelled by our administration team.
+        </p>
+
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:20px;margin:25px 0;">
+          <strong>Booking Number:</strong> #${id}<br>
+          <strong>Status:</strong> Cancelled
+        </div>
+
+        <p style="font-size:16px;line-height:1.8;color:#374151;">
+          If you have any questions or believe this action was taken by mistake,
+          please contact our support team for immediate assistance.
+        </p>
+
+        <div style="text-align:center;margin-top:30px;">
+          <a href="#"
+             style="background:#2563eb;color:white;text-decoration:none;padding:14px 28px;border-radius:8px;display:inline-block;">
+             Contact Support
+          </a>
+        </div>
+
+        <hr style="margin:35px 0;border:none;border-top:1px solid #e5e7eb;">
+
+        <p style="color:#6b7280;">
+          Thank you for choosing SkyTrip.<br>
+          We appreciate your trust and look forward to serving you again.
+        </p>
+      </div>
+
+    </div>
+  </div>
+  `,
           );
 
           showToast("Booking deleted and email sent");
