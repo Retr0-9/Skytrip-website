@@ -2584,9 +2584,64 @@
 
           await sendBookingEmail(
             email,
-            "Booking Confirmed",
-            `<h2>Your booking has been confirmed</h2>
-       <p>Booking #${id} has been confirmed successfully.</p>`,
+            "Your Booking Has Been Confirmed",
+            `
+  <div style="font-family: Arial, sans-serif; background:#f4f7fb; padding:30px;">
+    <div style="max-width:650px; margin:auto; background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+
+      <div style="background:linear-gradient(135deg,#16a34a,#15803d); padding:35px; text-align:center; color:white;">
+        <h1 style="margin:0; font-size:30px;">Booking Confirmed</h1>
+        <p style="margin:10px 0 0; font-size:16px;">Your trip is now officially reserved</p>
+      </div>
+
+      <div style="padding:35px;">
+        <h2 style="color:#111827; margin-top:0;">Hello Traveler,</h2>
+
+        <p style="font-size:16px; line-height:1.8; color:#374151;">
+          Great news! Your booking has been successfully confirmed by our administration team.
+        </p>
+
+        <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:12px; padding:20px; margin:25px 0;">
+          <p style="margin:0 0 8px;">
+            <strong>Booking Reference:</strong> #${id}
+          </p>
+          <p style="margin:0;">
+            <strong>Status:</strong>
+            <span style="color:#16a34a; font-weight:bold;">Confirmed</span>
+          </p>
+        </div>
+
+        <p style="font-size:16px; line-height:1.8; color:#374151;">
+          Your reservation is now active. Please make sure your travel documents and personal information are correct before your departure date.
+        </p>
+
+        <div style="background:#eff6ff; border-left:4px solid #2563eb; padding:18px; border-radius:8px; margin-top:25px;">
+          <strong>What’s Next?</strong>
+          <ul style="margin-top:10px; color:#374151; padding-left:20px;">
+            <li>Review your booking details.</li>
+            <li>Prepare your travel documents.</li>
+            <li>Arrive at the airport on time.</li>
+            <li>Enjoy your journey with us.</li>
+          </ul>
+        </div>
+
+        <div style="text-align:center; margin-top:35px;">
+          <div style="display:inline-block; background:#16a34a; color:white; padding:15px 30px; border-radius:10px; font-size:17px; font-weight:bold;">
+            Booking Successfully Confirmed
+          </div>
+        </div>
+
+        <hr style="margin:40px 0; border:none; border-top:1px solid #e5e7eb;">
+
+        <p style="color:#6b7280; text-align:center;">
+          Thank you for choosing <strong>SkyTrip</strong>.<br>
+          We wish you a pleasant and safe journey.
+        </p>
+      </div>
+
+    </div>
+  </div>
+  `,
           );
 
           showToast(`Booking #${id} confirmed and email sent`);
